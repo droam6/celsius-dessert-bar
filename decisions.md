@@ -1,0 +1,9 @@
+- D1: Brand collaboration slideshow = SVG only, glosscarwash.com.au-style auto-scroll marquee
+- D2: YouTube embed = landscape phone mockup mirroring northshoretiles.com.au
+- D3: Pricing visibility = features only, no dollar amounts shown
+- D4: Base template = Bosland Properties (lifted because of similar luxury aesthetic Jack likes)
+- D5: Marquee logo legibility — chose option 3 (light pills under each logo) over greyscale or force-white. Preserves brand recognition, looks like a press wall, ships now even with mixed logo formats (SVG + PNG + JPG).
+- D6: Orphan components — TrustBar + Team deleted. About + Services + Testimonials repurposed (Testimonials remains dormant until real reviews land; Services renamed to Packages).
+- D7: Packages section uses 3-card layout (Classic / Signature / Premium), no public pricing, every card CTA routes to contact form with package preselected via `celsius:package-selected` window event.
+- D8: Palette flipped from dark-first to light-first. Cream/teal/gold editorial. Achieved via token aliasing — zero component refactoring needed for the inversion. Component-specific treatments adjusted for marquee tiles, phone mockup glow→shadow, About placeholder hidden, card elevations, form input chrome, footer band override.
+- D9: About placeholder panel hidden on light palette — would read as broken image on cream. Section is text-only until client supplies event photography.

@@ -1,0 +1,131 @@
+{
+  "business": {
+    "name": "Celsius Dessert Bar",
+    "legal_name": "Celsius Dessert Bar",
+    "tagline": "Sydney's premier liquid nitrogen gelato experience",
+    "brand_tagline": "Crafted live. Served at -196°C.",
+    "about_text": "Celsius Dessert Bar brings theatre and indulgence together. From our Chatswood kiosk to weddings, corporate launches, and Sydney's biggest events, we craft small-batch liquid nitrogen gelato live in front of your guests — every scoop made fresh, every flavour built to order. We've been the dessert moment behind brand activations, gala dinners, premieres, and private celebrations across the city.",
+    "established_year": null,
+    "address": {
+      "street": "Kiosk 4, Chatswood Bus Interchange, 436 Victoria Avenue",
+      "suburb": "Chatswood",
+      "state": "NSW",
+      "postcode": "2067",
+      "country": "Australia"
+    },
+    "phone": "0451 073 136",
+    "email": "info@celsiusdessertbar.com.au",
+    "website": "celsiusdessertbar.com.au",
+    "youtube_hero_url": "https://www.youtube.com/watch?v=fy8wgPPoReI",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Celsius+Dessert+Bar+Chatswood",
+    "social": {
+      "instagram": "https://www.instagram.com/celsiusdessertbar/",
+      "facebook": null,
+      "twitter": null,
+      "linkedin": null,
+      "tiktok": null
+    },
+    "hours": [
+      { "days": "Mon – Fri", "hours": "7:00 AM – 5:00 PM" },
+      { "days": "Sat – Sun", "hours": "12:00 PM – 5:00 PM" }
+    ],
+    "webhook_url": null
+  },
+  "event_types": [
+    "Weddings",
+    "Corporate Events & Brand Activations",
+    "Private Parties",
+    "Product Launches",
+    "Gala Dinners & Galas",
+    "Birthdays & Milestones",
+    "Festivals & Public Events",
+    "Film, TV & Premiere Events"
+  ],
+  "packages": [
+    {
+      "name": "Classic",
+      "tier": "A",
+      "guest_capacity": "Up to 100 guests",
+      "highlights": [
+        "2 signature flavours",
+        "2 professional gelato chefs",
+        "1 hour live nitrogen show",
+        "Full equipment, setup and pack-down"
+      ]
+    },
+    {
+      "name": "Signature",
+      "tier": "B",
+      "guest_capacity": "Up to 150 guests",
+      "highlights": [
+        "2 signature flavours",
+        "2 professional gelato chefs",
+        "1 hour live nitrogen show",
+        "Full equipment, setup and pack-down"
+      ]
+    },
+    {
+      "name": "Premium",
+      "tier": "C",
+      "guest_capacity": "150+ guests",
+      "highlights": [
+        "2 signature flavours plus a custom flavour designed for your event",
+        "2 professional gelato chefs",
+        "1.5 hour live nitrogen show",
+        "Full equipment, setup and pack-down"
+      ]
+    }
+  ],
+  "menu": {
+    "note": "Placeholder menu — client to supply final flavour list.",
+    "signature_flavours": [
+      "Madagascan Vanilla Bean",
+      "Belgian Dark Chocolate",
+      "Salted Caramel Pretzel",
+      "Strawberries & Cream",
+      "Pistachio & Honey",
+      "Cookies & Cream",
+      "Mango Sorbet",
+      "Espresso Martini",
+      "Matcha White Chocolate",
+      "Lemon Cheesecake"
+    ],
+    "custom_flavour_note": "Premium package guests receive a bespoke flavour developed by our chefs to match your event theme."
+  },
+  "brand_partners": [
+    { "name": "Lancôme", "logo": "/images/brands/lancome.svg" },
+    { "name": "Honda", "logo": "/images/brands/honda.svg" },
+    { "name": "Mitsubishi Motors", "logo": "/images/brands/mitsubishi-motors.svg" },
+    { "name": "Subaru", "logo": "/images/brands/subaru.svg" },
+    { "name": "Hitachi", "logo": "/images/brands/hitachi.svg" },
+    { "name": "Google", "logo": "/images/brands/google.svg" },
+    { "name": "Salesforce", "logo": "/images/brands/salesforce.svg" },
+    { "name": "Deloitte", "logo": "/images/brands/deloitte.svg" },
+    { "name": "Carriageworks", "logo": "/images/brands/carriageworks.svg" },
+    { "name": "Doltone House", "logo": "/images/brands/doltone-house.svg" },
+    { "name": "Navarra Venues", "logo": "/images/brands/navarra-venues.svg" },
+    { "name": "Royal Randwick", "logo": "/images/brands/royal-randwick.svg" },
+    { "name": "Pendolino", "logo": "/images/brands/pendolino.png" },
+    { "name": "The Lakes Golf Club", "logo": "/images/brands/the-lakes-golf-club.jpg" }
+  ],
+  "service_area": "Sydney metro and surrounds",
+  "reviews": [],
+  "_pending_brand_logos": [
+    "The Calyx",
+    "Western Sydney University",
+    "The Star",
+    "Priceline",
+    "Four Seasons",
+    "Museum of Contemporary Art Australia",
+    "ICC Sydney",
+    "Goulburn Mulwaree Library",
+    "Museum of Illusions Sydney",
+    "Liverpool City Council",
+    "Ivy",
+    "Amaze In Taste",
+    "Applause Entertainment",
+    "Zest",
+    "Vivid Sydney (silhouette only — needs full mark)",
+    "Extraordinary Events (need higher-res asset)"
+  ]
+}

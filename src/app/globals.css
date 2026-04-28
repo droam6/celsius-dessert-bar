@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Celsius palette — LIGHT-FIRST. Cream surfaces, deep teal + deep gold accents.
+     Bosland-era class names (bg-charcoal, text-cream, etc.) are kept and aliased
+     to light values so the inversion needs zero component refactoring. */
+
+  /* Light surfaces */
+  --color-bg: #FBF8F0;                 /* primary cream background */
+  --color-bg-elevated: #FFFFFF;        /* white — featured panels, form fields */
+  --color-bg-deep: #F0EBDD;            /* deeper cream — Packages + Footer band */
+
+  /* Bosland-era class aliases — flipped to light surfaces */
+  --color-charcoal: #FBF8F0;           /* bg-charcoal → cream */
+  --color-charcoal-light: #FFFFFF;     /* bg-charcoal-light → white */
+  --color-charcoal-dark: #F0EBDD;      /* bg-charcoal-dark → deeper cream */
+
+  /* Text */
+  --color-text: #1A1A1D;
+  --color-cream: #1A1A1D;              /* text-cream → near-black */
+  --color-warm-white: #1A1A1D;         /* text-warm-white → near-black */
+  --color-muted: rgba(26, 26, 29, 0.6);
+
+  /* Teal — deepened for legibility on cream */
+  --color-teal: #2F8F89;               /* primary teal accent */
+  --color-teal-deep: #1F6B66;          /* hover/active */
+  --color-teal-bright: #5DBFB8;        /* legacy bright — accent only, not primary */
+
+  /* Gold — deepened for cream */
+  --color-gold: #A88947;               /* primary gold (CTAs, eyebrows, ribbons) */
+  --color-gold-light: #C9A86A;         /* hover / lighter accent */
+  --color-gold-dark: #8A6F39;          /* deeper sub-accent */
+
+  --color-border: rgba(47, 143, 137, 0.18);
+
+  --font-heading: var(--font-dm-serif), "Georgia", serif;
+  --font-body: var(--font-dm-sans), "Helvetica Neue", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: #FBF8F0;
+}
+
+/* ─────────── Brand marquee ─────────── */
+
+@keyframes brand-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.brand-marquee-track {
+  animation: brand-marquee 40s linear infinite;
+  will-change: transform;
+}
+
+.brand-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (max-width: 768px) {
+  .brand-marquee-track {
+    animation-duration: 25s;
+  }
+}
+
+/* Tiles — chrome stripped on light palette. Logos sit directly on the section bg. */
+.brand-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  height: 56px;
+  padding: 0 18px;
+  transition: transform 0.3s ease;
+}
+
+.brand-tile:hover {
+  transform: scale(1.04);
+}
+
+@media (min-width: 768px) {
+  .brand-tile {
+    min-width: 160px;
+    height: 72px;
+    padding: 0 24px;
+  }
+}
+
+/* Logos that are white-on-transparent need a contrast pill or they vanish on cream. */
+.brand-tile[data-needs-dark-bg="true"] {
+  background: var(--color-text);
+  border-radius: 12px;
+  padding: 12px 24px;
+}
+
+.brand-tile-logo {
+  max-height: 32px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .brand-tile-logo {
+    max-height: 44px;
+  }
+}
+
+/* ─────────── Packages — card elevation on cream ─────────── */
+
+.package-card {
+  box-shadow:
+    0 4px 24px rgba(26, 26, 29, 0.06),
+    0 1px 4px rgba(26, 26, 29, 0.04);
+}
+
+.package-card:hover {
+  box-shadow:
+    0 12px 40px rgba(26, 26, 29, 0.10),
+    0 2px 8px rgba(26, 26, 29, 0.06);
+}
+
+.package-card--featured {
+  box-shadow:
+    0 18px 50px rgba(26, 26, 29, 0.12),
+    0 4px 12px rgba(26, 26, 29, 0.06);
+}
+
+.package-card--featured:hover {
+  box-shadow:
+    0 24px 60px rgba(26, 26, 29, 0.14),
+    0 6px 16px rgba(26, 26, 29, 0.08);
+}
+
+/* ─────────── Contact form — fields need real chrome on cream ─────────── */
+
+#contact form input,
+#contact form select,
+#contact form textarea {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#contact form input::placeholder,
+#contact form textarea::placeholder {
+  color: rgba(26, 26, 29, 0.4);
+}
+
+#contact form input:focus,
+#contact form select:focus,
+#contact form textarea:focus {
+  border-color: var(--color-teal);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(47, 143, 137, 0.12);
+}
