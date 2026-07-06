@@ -1,0 +1,128 @@
+ROUND 7 — Hero video reset. Strip the broken blend/opacity/filter approach and use mix-blend-mode: screen which is the correct blend mode for white-smoke-on-black source video onto a cream page.
+
+Read CLAUDE.md, progress.md, decisions.md.
+
+Working directory: ~/Desktop/celsius-dessert-bar
+
+Diagnosis: previous attempts used mix-blend-mode: multiply (failed: needs opaque parent, killed visibility) and then opacity + filter (failed: opacity flattens contrast on black-bg source, smoke becomes muddy and invisible).
+
+Correct approach: mix-blend-mode: screen. Screen blend treats pure black as transparent and lifts lighter pixels onto the layer below. White smoke on black source video becomes white smoke drifting on cream with the black bg fully invisible. This is the standard technique for compositing white-smoke stock footage onto a light page.
+
+ALSO fix: in the latest preview the hero text is sitting too low on the page with a huge empty space above. Text should be vertically centered.
+
+=== STEP 1: VERIFY VIDEO FILES STILL EXIST ===
+
+1a. Run:
+    ls -lh public/videos/ public/images/hero-smoke-poster.jpg
+
+1b. Confirm hero-smoke.mp4, hero-smoke.webm, and hero-smoke-poster.jpg are all still present and have non-zero file sizes. If any are missing or corrupted, STOP and report — we'll re-encode from the source. Don't proceed if the files aren't there.
+
+=== STEP 2: REWRITE HERO VIDEO BLOCK ===
+
+2a. Open src/components/Hero.tsx. Find the existing background video block (the <div className="absolute inset-0 z-0 ..."> that contains the <video> element and the gradient overlay).
+
+2b. Replace that ENTIRE block with this exact markup:
+
+    {/* Background video layer — screen blend lifts white smoke onto cream, drops black bg */}
+    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        poster="/images/hero-smoke-poster.jpg"
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{
+          mixBlendMode: 'screen',
+        }}
+        aria-hidden="true"
+      >
+        <source src="/videos/hero-smoke.webm" type="video/webm" />
+        <source src="/videos/hero-smoke.mp4" type="video/mp4" />
+      </video>
+
+      {/* Soft cream wash at the bottom for text legibility — top stays clear so smoke reads strong */}
+      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-b from-transparent via-[rgba(251,248,240,0.35)] to-[rgba(251,248,240,0.85)]" />
+    </div>
+
+2c. Why screen blend works here:
+    - Source video: white/grey smoke wisps on solid black background
+    - Screen blend formula: result = 1 - (1 - bg) * (1 - video). Black pixels (0) leave bg unchanged; white pixels (1) push toward white
+    - On cream bg: black areas of video disappear (cream shows through), white smoke lifts toward bright white drifting over cream
+    - This is the bog-standard technique for compositing stock smoke footage onto light backgrounds — used by every premium agency site that does this
+
+2d. The video container <div> needs NO bg colour. Removing the bg-[#FBF8F0] from the container that previous rounds added — screen blend works against whatever's behind, which in this case is the hero section's cream bg directly.
+
+2e. Show me the final Hero.tsx video block.
+
+=== STEP 3: FIX HERO TEXT VERTICAL POSITIONING ===
+
+3a. The hero <section> currently has min-h-screen + flex items-center, but the screenshot shows text sitting low with a huge gap above. Likely cause: pt-32 lg:pt-40 pb-32 padding is forcing the text down inside the flex container.
+
+3b. Find the section element opening tag in Hero.tsx. It currently looks something like:
+    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden bg-[#FBF8F0] pt-32 lg:pt-40 pb-32">
+
+3c. Replace with:
+    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden bg-[#FBF8F0] pt-24 pb-24">
+
+    The flex items-center handles vertical centering; the lighter padding gives breathing room without forcing the text low.
+
+3d. Show me the updated section opening tag.
+
+=== STEP 4: VERIFY VIDEO ACTUALLY PLAYS ===
+
+4a. After Claude Code edits, the Next dev server should hot-reload automatically. Jack will hard-refresh the browser (Ctrl+Shift+R).
+
+4b. To pre-empt the diagnostic loop: add a tiny dev-only console log inside Hero.tsx to confirm the video is mounting. Add this useEffect (you'll need 'use client' directive at the top if not already present, and import useEffect/useRef from react):
+
+    'use client';
+    import { useEffect, useRef } from 'react';
+    // ... existing imports
+
+    // Inside the component:
+    const videoRef = useRef<HTMLVideoElement>(null);
+    useEffect(() => {
+      const v = videoRef.current;
+      if (!v) return;
+      const onPlay = () => console.log('[hero-video] playing');
+      const onError = (e: Event) => console.error('[hero-video] error', e);
+      v.addEventListener('play', onPlay);
+      v.addEventListener('error', onError);
+      // Force play attempt — some browsers ignore autoplay attribute on hot-reload
+      v.play().catch(err => console.warn('[hero-video] autoplay blocked:', err));
+      return () => {
+        v.removeEventListener('play', onPlay);
+        v.removeEventListener('error', onError);
+      };
+    }, []);
+
+    // And on the <video> element: ref={videoRef}
+
+4c. With this, when Jack opens DevTools Console, he'll see one of:
+    - [hero-video] playing → video element mounted and playing, problem is purely visual blend
+    - [hero-video] autoplay blocked: ... → browser is blocking autoplay (Chrome usually doesn't, but possible)
+    - [hero-video] error ... → file load problem
+    - Nothing logged → video element not mounting at all (component error)
+
+4d. Show me the updated Hero.tsx top imports + useEffect block + the video element with ref.
+
+=== STEP 5: TYPECHECK + STAGE ===
+
+5a. npx tsc --noEmit
+
+5b. git add -A
+    git status
+
+5c. DO NOT COMMIT. DO NOT PUSH.
+
+=== AFTER ALL TASKS ===
+
+Report:
+1. Video file existence confirmation
+2. Updated Hero.tsx video block
+3. Updated section opening tag
+4. useEffect debug block
+5. tsc result
+6. git status
+7. Tell Jack what to look for in browser DevTools Console after hard-refresh

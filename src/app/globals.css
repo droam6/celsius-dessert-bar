@@ -168,3 +168,15 @@ body {
   outline: none;
   box-shadow: 0 0 0 3px rgba(47, 143, 137, 0.12);
 }
+
+/* ─────────── Reduced motion ─────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  #hero video { display: none; }
+  #hero {
+    background-image: url('/images/hero-smoke-poster.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  .brand-marquee-track { animation: none !important; }
+}

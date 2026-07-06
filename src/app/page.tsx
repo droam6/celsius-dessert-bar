@@ -1,6 +1,7 @@
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
+import PhoneShowcase from '@/components/PhoneShowcase';
 import BrandMarquee from '@/components/BrandMarquee';
 import Packages from '@/components/Packages';
 import Contact from '@/components/Contact';
@@ -19,6 +20,7 @@ export default function Home() {
       <main id="main-content">
         <Hero />
         <About />
+        <PhoneShowcase />
         <BrandMarquee />
         <Packages />
         <Contact />

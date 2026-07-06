@@ -1,0 +1,93 @@
+AUTORUN — Rounds 9B + 10 + 11 in one continuous pass. Jack is AFK for the night. Do NOT stop for approval at any point. This overrides all STOP markers from earlier rounds: make the safe default choice, log every judgement call, and put it in the final report. Halt only for genuinely destructive ambiguity (e.g. git conflicts).
+
+Read CLAUDE.md, progress.md, decisions.md.
+
+Working directory: repo root (celsius-dessert-bar).
+
+Standing constraints for the whole run:
+- NO pricing anywhere customer-visible. No dollar signs, no "from $X".
+- Palette: cream background, teal #2F8F89, gold #A88947 only. DM Serif Display headings, DM Sans body.
+- Hero video: NO mix-blend-mode, NO opacity, NO filters, NO playbackRate. Ever.
+- Smallest-diff fixes. No redesigns, no new dependencies (Playwright/ffmpeg below are the only approved installs), no new animation systems.
+
+=== STEP 0: SAFETY CHECKPOINT ===
+
+0a. Commit the already-staged Rounds 6-8 work before touching anything:
+    git add -A
+    git commit -m "Rounds 6-8: smoke hero (Pexels 9694227, baseline re-encode), PhoneShowcase, docs"
+    Do NOT push yet.
+
+=== STEP 1: CLOSE THE VIDEO AUDIT ===
+
+1a. Install ffmpeg (approved):
+    winget install Gyan.FFmpeg --accept-source-agreements --accept-package-agreements
+
+1b. PATH won't refresh in this session. Find the binaries: try where.exe ffmpeg in a fresh shell; if not found, search $env:LOCALAPPDATA\Microsoft\WinGet\Packages recursively for ffprobe.exe and use full paths.
+
+1c. Probe the existing file:
+    ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,profile,pix_fmt,width,height -of default=noprint_wrappers=1 public/videos/hero-smoke.mp4
+    - Profile Baseline/Constrained Baseline + yuv420p → encode verified. Continue.
+    - Anything else → re-encode now:
+      curl -L -o /tmp/hero-source.mp4 "https://videos.pexels.com/video-files/9694227/9694227-hd_1920_1080_25fps.mp4"
+      ffmpeg -i /tmp/hero-source.mp4 -c:v libx264 -profile:v baseline -level 3.1 -pix_fmt yuv420p -preset medium -crf 23 -vf "scale=1920:1080" -an -movflags +faststart public/videos/hero-smoke.mp4
+      (add -t 15 if source > 20s)
+      ffmpeg -i public/videos/hero-smoke.mp4 -ss 2 -vframes 1 -q:v 2 public/images/hero-smoke-poster.jpg
+      rm /tmp/hero-source.mp4
+    - If ffmpeg cannot be installed at all: log it, proceed on the circumstantial evidence (docs + Hero.tsx + size match), mark codec UNVERIFIED in the final report. Do not halt.
+
+1d. PAINT PROOF (stand-in for Jack's eyes — Rounds 7-8 proved diagnostics lie):
+    - Install Playwright chromium if absent: npx playwright install chromium
+    - npm install if node_modules missing, then npm run build. Build errors get fixed before anything else proceeds.
+    - Start the production server in the background on a port that won't clash: npx next start -p 3010
+    - Playwright script: load http://localhost:3010, wait 1.5s, screenshot the hero viewport → qa-screens/hero-t1.png. Wait 3 more seconds, screenshot again → qa-screens/hero-t2.png. Compare the two images (pixel/buffer diff).
+      - Frames differ → video paints. Log PASS.
+      - Byte-identical → video is NOT painting even on the new encode. Log CRITICAL, do not burn the night on it — continue the run so the rest of the site still gets finished, and put it at the top of the final report.
+    - Keep the server running for Step 3's screenshots; kill it at the end.
+    - Add qa-screens/ to .gitignore.
+
+=== STEP 2: ROUND 10 — /menu PAGE + NAV ===
+
+2a. Audit src/app/ routes. If inner pages exist, match their pattern; if single-page, /menu is the first inner route — follow the homepage design language.
+
+2b. Create src/app/menu/page.tsx:
+    - Metadata: title "Menu | Celsius Dessert Bar", description around liquid nitrogen gelato crafted live at -196°C in Chatswood. No pricing language.
+    - Structure top to bottom:
+      • Hero band (60-70vh max): "The Menu" + one-line subhead
+      • Signature Gelato: 8 flavours, evocative name + one-line description each (luxury tone, no clichés, your discretion)
+      • Seasonal Rotation: 4 flavours flagged rotating
+      • Toppings & Finishes: 6-8 items (torched meringue, gold leaf, etc.)
+      • Closing CTA band: "Want this at your event?" → enquiry form, existing CTA styling
+      • Small italic note: "Menu rotates seasonally. Ask us in store for today's flavours."
+    - Reuse existing Framer Motion variants. Single column mobile, 2-col grid desktop.
+
+2c. Add "Menu" to Navigation.tsx (desktop nav AND mobile menu, after the first item, matching existing link styling), add to Footer.tsx links, add /menu to public/sitemap.xml.
+
+2d. npm run build must pass clean before Step 3.
+
+=== STEP 3: ROUND 11 — POLISH LOOP ===
+
+Run up to 3 full passes of this audit. Fix everything found, re-run the full audit. Exit early only on a zero-issue pass. Client standard: "wow". Act as your own Nemesis — hunt, don't defend.
+
+A. Brand remnants: grep -ri "bosland|propert|real estate|calvin|suburb" src/ public/ data/ --include="*.tsx" --include="*.ts" --include="*.json" --include="*.xml" — zero hits outside progress/decisions docs.
+B. Client facts exact everywhere used: Kiosk 4, Chatswood Bus Interchange, 436 Victoria Avenue, Chatswood NSW 2067 · 0451 073 136 · Mon-Fri 7am-5pm, Sat-Sun 12pm-5pm · Instagram celsiusdessertbar. Pricing sweep: grep -rn "\$" src/ data/ — justify every hit, fix any customer-visible price.
+C. Responsive: Playwright screenshots of / and /menu at 375, 768, 1440 against the running :3010 server → qa-screens/. Inspect each for clipping, overflow, broken grids, nav behaviour. Fix and re-shoot.
+D. Typography: heading hierarchy per page, DM Serif Display headings only, consistent section rhythm.
+E. Interaction: every CTA routes to the enquiry form or valid anchor; hover + focus states; marquee scrolls; PhoneShowcase renders; hero video element has autoplay/muted/loop/playsinline and zero effects.
+F. Technical: npm run build clean; alt text on all images; per-route metadata + OG tags; sitemap + robots.txt correct for celsiusdessertbar.com.au; favicon; no dead links.
+
+Anything needing a judgement call bigger than a fix: log it for Jack, do not rebuild.
+
+=== STEP 4: WRAP ===
+
+4a. Kill the :3010 server.
+4b. Update progress.md and decisions.md with Rounds 9-11.
+4c. git add -A
+4d. git commit -m "Rounds 9-11: video audit closed, /menu page + nav, full polish pass"
+4e. git push origin main
+
+4f. FINAL REPORT, in this order:
+    1. Hero paint proof result (PASS / CRITICAL / UNVERIFIED) — this is the single most important line
+    2. Codec verification result
+    3. What each polish pass found and fixed
+    4. Judgement calls made during the run
+    5. Waiting on Jack: eyeball hero motion in his own Chrome, /menu on phone, 14 brand logos, real menu content, client imagery, testimonials

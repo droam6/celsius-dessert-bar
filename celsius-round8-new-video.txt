@@ -1,0 +1,137 @@
+ROUND 8 — Replace hero video with new Pexels clip 9694227. No effects. Native speed. Just paste it in.
+
+Working directory: ~/Desktop/celsius-dessert-bar
+
+Replacing the previous broken hero video with: Pexels video 9694227, "White smoke against black background" by cottonbro studio. Free commercial licence.
+
+Hard rules for this round:
+- NO mix-blend-mode
+- NO opacity (full opacity)
+- NO filters (no contrast, brightness, saturation modifications)
+- NO playbackRate changes (full natural speed)
+- Re-encode with bulletproof H.264 baseline yuv420p so it actually paints
+- Keep cream page palette intact
+
+=== STEP 1: DOWNLOAD + RE-ENCODE ===
+
+1a. Delete existing video assets:
+    rm -f public/videos/hero-smoke.mp4
+    rm -f public/videos/hero-smoke.webm
+    rm -f public/images/hero-smoke-poster.jpg
+
+1b. Download fresh source:
+    curl -L -o /tmp/hero-source.mp4 "https://videos.pexels.com/video-files/9694227/9694227-hd_1920_1080_25fps.mp4"
+    ls -lh /tmp/hero-source.mp4
+
+    Confirm > 5 MB. If not, the download failed — try again or report.
+
+1c. Re-encode with maximum-compatibility H.264 profile (this is the encode that fixes the previous paint failure):
+    ffmpeg -i /tmp/hero-source.mp4 \
+      -c:v libx264 \
+      -profile:v baseline \
+      -level 3.1 \
+      -pix_fmt yuv420p \
+      -preset medium \
+      -crf 23 \
+      -vf "scale=1920:1080" \
+      -an \
+      -movflags +faststart \
+      public/videos/hero-smoke.mp4
+
+    NOTE: no -t flag this time. Use the full source duration so the loop has more variety. If the source is over 20s, trim with -t 15 instead.
+
+1d. Generate poster from frame at 2 seconds (where there's already visible smoke):
+    ffmpeg -i public/videos/hero-smoke.mp4 -ss 2 -vframes 1 -q:v 2 public/images/hero-smoke-poster.jpg
+
+1e. Confirm sizes:
+    ls -lh public/videos/hero-smoke.mp4 public/images/hero-smoke-poster.jpg
+
+    Expect MP4 around 4-8 MB, poster around 100-300 KB.
+
+1f. Clean up source:
+    rm /tmp/hero-source.mp4
+
+=== STEP 2: HERO.TSX — STRIP TO BARE MINIMUM ===
+
+2a. Open src/components/Hero.tsx. Find the background video block (the <div className="absolute inset-0 z-0 ...">).
+
+2b. Replace the ENTIRE block with this exact markup. No extra divs, no overlays, no decorations:
+
+    {/* Hero background video — full opacity, native speed, no effects */}
+    <video
+      ref={videoRef}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      poster="/images/hero-smoke-poster.jpg"
+      className="absolute inset-0 w-full h-full object-cover z-0"
+      aria-hidden="true"
+    >
+      <source src="/videos/hero-smoke.mp4" type="video/mp4" />
+    </video>
+
+    {/* Bottom gradient — needed for text legibility, NOT applied to the video itself */}
+    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-[rgba(251,248,240,0.75)] z-[1] pointer-events-none" />
+
+2c. Notes:
+    - No wrapping container div around the video — video sits directly in the section
+    - No mix-blend-mode, no opacity, no filter — video plays at full visible strength
+    - Black background of the video WILL show through where there's no smoke. That's fine — it'll read as a dark cinematic hero behind the text rather than a cream hero
+    - Bottom gradient is a SEPARATE div over the video, not applied to the video, so it doesn't affect playback rendering
+    - Result: full-opacity smoke + black video showing through, with cream gradient at the bottom anchoring the text column
+
+2d. The text content needs to be readable on a now-darker hero. Update text colors in the same file:
+    - eyebrow: text-gold (kept)
+    - h1: change to text-[#FBF8F0] (cream — strong contrast on the dark video)
+    - h1 second line "Crafted at -196°C." accent: keep text-teal (visible on black)
+    - subhead paragraph: text-[#FBF8F0]/85
+    - "Enquire for your event" CTA: keep gold (already strong on dark)
+    - "View packages" secondary CTA: change border + text from current dark to border-[#FBF8F0]/50 text-[#FBF8F0]
+
+2e. The hero section background — was bg-[#FBF8F0]. Keep it for the brief moment before the video loads (poster shows over cream), but accept that once the video paints, the hero is effectively dark. The rest of the site stays cream/light.
+
+2f. Show me the updated section opening tag, video block, gradient overlay, and text content with new colors.
+
+=== STEP 3: SIMPLIFY USEEFFECT ===
+
+3a. Strip the diagnostic interval. Replace the useEffect with the minimal version:
+
+    useEffect(() => {
+      const v = videoRef.current;
+      if (!v) return;
+      v.play().catch(() => {});
+    }, []);
+
+3b. Show me the simplified useEffect.
+
+=== STEP 4: UPDATE REDUCED-MOTION FALLBACK ===
+
+4a. In globals.css, the reduced-motion fallback for #hero references the old gradient pattern. Update to:
+
+    @media (prefers-reduced-motion: reduce) {
+      #hero video { display: none; }
+      #hero {
+        background-image: url('/images/hero-smoke-poster.jpg');
+        background-size: cover;
+        background-position: center;
+      }
+      .brand-marquee-track { animation: none !important; }
+    }
+
+=== STEP 5: TYPECHECK + STAGE ===
+
+5a. npx tsc --noEmit
+5b. git add -A
+5c. git status
+
+=== AFTER ===
+
+Report:
+1. New MP4 file size + duration
+2. Final Hero.tsx markup (section, video, gradient, text colors)
+3. Final useEffect
+4. tsc result
+5. git status
+6. Tell Jack: hard-refresh browser (Ctrl+Shift+R). The hero will now be a dark video with cream/teal/gold text. The rest of the site stays cream. If smoke is still not visibly moving — at this point we abandon video entirely and use a different approach.

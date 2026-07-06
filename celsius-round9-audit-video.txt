@@ -1,0 +1,58 @@
+ROUND 9 — State audit + hero video fix. Execute the Round 8 video swap only if it never ran.
+
+Read CLAUDE.md, progress.md, decisions.md.
+
+Working directory: repo root (celsius-dessert-bar).
+
+Context: Rounds 7–8 fought a hero video paint failure — video reported playing (currentTime advancing, readyState 4) but frames never rendered. Round 8 was written to replace the clip with Pexels 9694227 (cottonbro studio, free commercial licence), re-encoded H.264 baseline yuv420p, ALL rendering tricks stripped. Unknown if it executed. Verify first, then act.
+
+Hard rules:
+- NO mix-blend-mode, NO opacity on the video, NO CSS filters, NO playbackRate changes.
+- If a tool is missing or a check is ambiguous, STOP and report. Do not improvise.
+
+=== STEP 1: STATE AUDIT ===
+
+1a. Sync check:
+    git fetch origin
+    git status
+    git log --oneline -10
+    If local is behind origin/main with no uncommitted work worth keeping: git reset --hard origin/main
+
+1b. Video asset check:
+    ls -lh public/videos/
+    ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,profile,pix_fmt,width,height -of default=noprint_wrappers=1 public/videos/hero-smoke.mp4
+    If ffprobe/ffmpeg is not installed on this machine, STOP and report.
+
+1c. Read src/components/Hero.tsx end to end. Report whether any of these survive: mix-blend-mode, opacity/filter on the video layer, playbackRate.
+
+>>> STOP 1: Report git state + codec profile + Hero.tsx findings.
+    - Profile = Baseline, pix_fmt = yuv420p, Hero.tsx clean → skip Step 2, go to Step 3.
+    - Anything else → execute Step 2.
+
+=== STEP 2: VIDEO FIX (only if audit failed) ===
+
+2a. Delete old assets:
+    rm -f public/videos/hero-smoke.mp4 public/videos/hero-smoke.webm public/images/hero-smoke-poster.jpg
+
+2b. Download fresh source:
+    curl -L -o /tmp/hero-source.mp4 "https://videos.pexels.com/video-files/9694227/9694227-hd_1920_1080_25fps.mp4"
+    Confirm > 5 MB or report failure.
+
+2c. Re-encode with the max-compatibility profile (this IS the paint-failure fix):
+    ffmpeg -i /tmp/hero-source.mp4 -c:v libx264 -profile:v baseline -level 3.1 -pix_fmt yuv420p -preset medium -crf 23 -vf "scale=1920:1080" -an -movflags +faststart public/videos/hero-smoke.mp4
+    If source runs over 20s, add -t 15.
+
+2d. Poster from the 2s mark:
+    ffmpeg -i public/videos/hero-smoke.mp4 -ss 2 -vframes 1 -q:v 2 public/images/hero-smoke-poster.jpg
+
+2e. Rewrite the Hero.tsx background video block to bare minimum: absolute inset-0 wrapper, <video> with autoPlay muted loop playsInline preload="auto", poster attr, object-cover w-full h-full. Full opacity, zero effects. Cream palette and existing hero text/CTAs untouched.
+
+2f. rm /tmp/hero-source.mp4
+
+=== STEP 3: COMPILE SANITY ===
+
+3a. npm install if node_modules is missing.
+3b. npm run build — must compile clean. Report errors verbatim.
+3c. Do NOT commit. Do NOT run the dev server — Jack has it in a second terminal.
+
+>>> STOP 2: Full report. Jack eyeballs the hero in the browser before Round 10 fires.

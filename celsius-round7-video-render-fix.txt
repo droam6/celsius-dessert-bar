@@ -1,0 +1,108 @@
+ROUND 7 VIDEO RENDER FIX — User reports video is frozen on poster despite paused:false / currentTime advancing / readyState 4. Data says playing, eyes say frozen. Likely cause: GPU paint failure on WebM/VP9 + mix-blend-mode combo, OR layout collapsing the video to 0 dimensions visually.
+
+Working directory: ~/Desktop/celsius-dessert-bar
+
+Strategy: strip everything fancy. No blend mode, no webm, no fancy filters. Just MP4, opacity, fixed dimensions. If this doesn't render, the problem is the file itself.
+
+=== STEP 1: Hero.tsx — strip and simplify the video block ===
+
+1a. Open src/components/Hero.tsx. Find the background video block.
+
+1b. Replace the ENTIRE <div className="absolute inset-0 z-0 ..."> (containing video + gradient overlay) with this:
+
+    {/* Background video — simplified for diagnosis */}
+    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        poster="/images/hero-smoke-poster.jpg"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          opacity: 0.6,
+        }}
+        aria-hidden="true"
+      >
+        <source src="/videos/hero-smoke.mp4" type="video/mp4" />
+      </video>
+    </div>
+
+    Notes on what changed:
+    - Removed <source> for webm — forces browser to use MP4/H.264 only (more reliable hardware decoding)
+    - Removed mix-blend-mode entirely — using plain opacity
+    - Inline styles instead of Tailwind for the video (rules out any Tailwind class collision)
+    - Removed the gradient overlay temporarily — we want to see if the raw video paints at all
+    - opacity: 0.6 so smoke is visible on cream without overwhelming text
+
+1c. Show me the updated block.
+
+=== STEP 2: Add a visible debug indicator ===
+
+2a. Add to the existing useEffect inside Hero.tsx — instead of just logging "playing", tick the currentTime to console every 2 seconds for 10 seconds:
+
+    useEffect(() => {
+      const v = videoRef.current;
+      if (!v) return;
+      const onPlay = () => console.log('[hero-video] play event fired');
+      const onError = (e: Event) => console.error('[hero-video] error', e);
+      v.addEventListener('play', onPlay);
+      v.addEventListener('error', onError);
+      v.play().catch((err) => console.warn('[hero-video] autoplay blocked:', err));
+
+      const interval = setInterval(() => {
+        if (v) {
+          console.log('[hero-video] tick — currentTime:', v.currentTime.toFixed(2), 'paused:', v.paused);
+        }
+      }, 2000);
+
+      return () => {
+        clearInterval(interval);
+        v.removeEventListener('play', onPlay);
+        v.removeEventListener('error', onError);
+      };
+    }, []);
+
+2b. This logs currentTime every 2 seconds. If currentTime keeps advancing in the console BUT the video still looks frozen visually, we have confirmed proof of GPU paint failure (data progresses, pixels don't repaint). If currentTime stops advancing, video is actually paused/stuck.
+
+=== STEP 3: Test ===
+
+3a. Save files. Hot-reload should fire. Hard-refresh browser (Ctrl+Shift+R).
+
+3b. Open DevTools Console. Watch for 10 seconds.
+
+3c. Three possible outcomes:
+
+OUTCOME A — Video now visibly plays (smoke moves):
+    Cause: The mix-blend-mode: screen was breaking GPU paint on this Chrome/GPU combo. Fix worked.
+    Next: send screenshot, we tune opacity if smoke is too strong/weak.
+
+OUTCOME B — Video still frozen, but currentTime ticks advance:
+    Cause: GPU/codec rendering failure. The MP4 is loaded and playhead advancing but frames aren't painting to screen.
+    Next step would be: try Chrome's "Disable hardware acceleration" (chrome://settings/system) to force software decode. If that makes it play, GPU driver issue.
+
+OUTCOME C — currentTime stops ticking:
+    Cause: Video element actually pauses. Browser autoplay policy or buffering issue.
+    Next step would be: investigate buffering and source file integrity.
+
+=== STEP 4: Stage ===
+
+4a. git add -A
+4b. git status
+4c. DO NOT COMMIT. DO NOT PUSH.
+
+=== AFTER ===
+
+Report:
+1. Updated Hero.tsx video block
+2. Updated useEffect block
+3. tsc result
+4. git status
+5. Tell Jack: hard-refresh browser, watch console for 10 seconds of ticks, screenshot the console output AND the hero. Report which outcome (A/B/C) he's seeing.
