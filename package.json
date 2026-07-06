@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",
-    "build": "next build && cp -r public/images out/images",
+    "build": "next build && node -e \"require('fs').cpSync('public/images','out/images',{recursive:true})\"",
     "start": "next start",
     "lint": "eslint"
   },

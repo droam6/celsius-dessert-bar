@@ -2,8 +2,9 @@ import Image from 'next/image';
 import agencyData from '@data/agency.json';
 
 const quickLinks = [
-  { label: 'Brands', href: '#brands' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Brands', href: '/#brands' },
+  { label: 'Menu', href: '/menu' },
+  { label: 'Contact', href: '/#contact' },
 ];
 
 export default function Footer() {

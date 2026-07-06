@@ -33,6 +33,10 @@ export default function Hero() {
         <source src="/videos/hero-smoke.mp4" type="video/mp4" />
       </video>
 
+      {/* Top scrim — grounds the eyebrow + headline when smoke drifts behind them.
+          Legibility overlay on a sibling div, NOT applied to the video itself. */}
+      <div className="absolute inset-x-0 top-0 h-[55%] bg-gradient-to-b from-[rgba(14,14,16,0.65)] to-transparent z-[1] pointer-events-none" />
+
       {/* Bottom gradient — needed for text legibility, NOT applied to the video itself */}
       <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-[rgba(251,248,240,0.75)] z-[1] pointer-events-none" />
 
@@ -43,7 +47,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-5 text-[11px] font-medium uppercase tracking-[0.3em] text-gold"
+            className="mb-5 text-[11px] font-medium uppercase tracking-[0.3em] text-gold-light [text-shadow:0_1px_12px_rgba(14,14,16,0.6)]"
           >
             {agencyData.business.tagline}
           </motion.p>
@@ -52,7 +56,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.35 }}
-            className="font-heading text-[clamp(2.75rem,6vw,5.5rem)] leading-[1.05] text-[#FBF8F0]"
+            className="font-heading text-[clamp(2.75rem,6vw,5.5rem)] leading-[1.05] text-[#FBF8F0] [text-shadow:0_2px_28px_rgba(14,14,16,0.55)]"
           >
             Live Liquid Nitrogen Gelato.
             <br />
@@ -63,7 +67,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.55 }}
-            className="mt-6 max-w-2xl text-[15px] leading-[1.75] text-[#FBF8F0]/85 lg:text-[16px]"
+            className="mt-6 max-w-2xl text-[15px] leading-[1.75] text-[#1A1A1D]/75 lg:text-[16px]"
           >
             Theatre dessert catering for weddings, corporate events, brand activations and
             private celebrations across Sydney. Every scoop crafted in front of your guests.
@@ -83,7 +87,7 @@ export default function Hero() {
             </a>
             <a
               href="#packages"
-              className="inline-block border border-[#FBF8F0]/50 px-8 py-3.5 text-[13px] font-medium uppercase tracking-[0.15em] text-[#FBF8F0] transition-all duration-300 hover:border-[#FBF8F0] hover:bg-[#FBF8F0]/10"
+              className="inline-block border border-[#1A1A1D]/35 px-8 py-3.5 text-[13px] font-medium uppercase tracking-[0.15em] text-[#1A1A1D] transition-all duration-300 hover:border-[#1A1A1D] hover:bg-[#1A1A1D]/5"
             >
               View packages
             </a>

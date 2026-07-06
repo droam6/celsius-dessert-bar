@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck — Bosland orphan, schema-incompatible with Celsius agency.json. Awaiting repurpose/delete decision (see Round 3 STOP 4d).
 'use client';
 

@@ -84,11 +84,36 @@ Pricing: hidden, all CTAs → enquiry form
 - page.tsx render order: Hero → About → BrandMarquee → Packages → Contact
 - Docs rewritten: CLAUDE.md, CLIENT-APPROVAL-CHECKLIST.md (full Celsius rewrite); decisions.md appended D5–D7
 
+## Round 9 — State audit + video verification (Windows machine)
+- ffmpeg/ffprobe was missing on the Windows PC (R6 install happened elsewhere) — installed via winget Gyan.FFmpeg 8.1.2
+- Codec audit PASSED: hero-smoke.mp4 is h264 Constrained Baseline, yuv420p, 1920×1080 — the R8 bulletproof encode is confirmed in place; Hero.tsx confirmed clean (no blend/opacity/filter/playbackRate)
+- Rounds 6–8 staged work committed as safety checkpoint (aa80859) before further changes
+- PAINT PROOF (Playwright, stand-in for eyeballs): screenshots 3s apart differ, video state playing/advancing — **the hero video paints. PASS.** Verified again at 1440 and 375 after later edits
+- Build script `cp -r` (Mac-only) swapped for cross-platform `node -e fs.cpSync` — `npm run build` was failing on Windows at the copy step
+- QA tooling: dependency-free Node static server for out/ on :3010 (`next start` unsupported with output:export) + Playwright sweep scripts; qa-screens/ gitignored
+
+## Round 10 — /menu page + navigation
+- data/agency.json menu restructured: signature[8] / seasonal[4] / toppings[8] as {name, description} objects + rotation_note (old flat signature_flavours[] replaced; only custom_flavour_note had consumers). Flavour copy is still PLACEHOLDER pending client menu
+- New src/app/menu/page.tsx: dark smoke-poster hero band ("The Menu"), Signature Gelato + Seasonal Rotation (teal "Rotating" pills) + Toppings & Finishes as editorial hairline lists (2-col desktop, 1-col mobile), closing CTA band → /#contact, italic seasonal-rotation note; per-route metadata + OG + canonical
+- Navigation: "Menu" link added (desktop + mobile, between Brands and Contact); anchors made route-safe (/#brands, /#contact); logo → "/"
+- Footer: Menu added to Navigate column, anchors route-safe
+- sitemap.xml: /menu added, lastmods bumped
+
+## Round 11 — Polish passes (3 total)
+- Pass 1 findings → fixed:
+  - Nav links/hamburger were `text-cream`/`bg-cream` (aliased to near-black since R5) → invisible over the dark hero video. Now scroll-state aware: light (#FBF8F0) over hero, dark (#1A1A1D) once scrolled onto cream bar; hamburger also flips when mobile menu opens
+  - Hero subhead + "View packages" CTA were cream over white smoke. ffmpeg signalstats across all 375 frames: that zone's luma NEVER drops below 190/255 → flipped to dark #1A1A1D. H1 got a soft text-shadow (min luma 113 in its band); eyebrow → gold-light + text-shadow
+  - Top dark scrim gradient added as sibling div (rgba(14,14,16,0.65)→transparent, top 55%) to ground eyebrow/H1 when smoke drifts behind them — video element itself remains 100% untouched
+- Pass 2: re-shot 1440 + 375 — hero now reads premium at every sampled frame; paint proof re-PASSED
+- Pass 3: full 6-viewport sweep (/, /menu × 375/768/1440) — zero horizontal overflow, zero new issues
+- Audits: brand-remnant grep clean (only dormant @ts-nocheck Testimonials orphan + legit address "suburb" fields); pricing sweep clean (every `$` is a template literal); anchors all resolve; images all have alt; robots/sitemap correct; build clean
+- Known headless-only blanks: PhoneShowcase YouTube embed + Google Maps iframe don't render in headless Chromium (no autoplay/cookies) — expected, fine in real browsers
+
 ## Status
-Pitch site fully composable, single-page, light editorial palette with one dark cinematic hero. Hero video re-encoded with bulletproof H.264 baseline yuv420p profile after multiple paint failures with the original clip + blend-mode chain. Production-ready pending client content drops (menu, photos, testimonials, missing logos, webhook URL) AND in-browser confirmation that the new video paints (R8 is the last attempt before abandoning video).
+Two-page site (/ + /menu), light editorial palette with dark cinematic heroes. Hero video paint-failure saga CLOSED: R8 encode verified (Constrained Baseline yuv420p) and machine-verified painting via Playwright frame-diff on the Windows PC. Hero text legibility rebuilt from measured per-frame luma. Production-ready pending client content drops.
 
 ## Next
-- Hard-refresh in browser to confirm new MP4 actually plays (smoke moving, not frozen poster). If still broken, abandon video, fall back to static smoke poster or a different visual treatment
-- Decide whether to keep the round 7/8 instruction .txt files in-repo (currently staged) or move them out before commit
+- Jack: eyeball hero motion in his own Chrome (machine-level GPU paths were the original suspect) + /menu on a real phone
 - iOS Safari device test on the PhoneShowcase YouTube embed
+- Client content: real menu (current flavour copy is placeholder), photography, testimonials, 16 missing brand logos, webhook URL, square favicon
 - Client review session

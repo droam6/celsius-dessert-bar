@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const navLinks = [
-  { label: 'Brands', href: '#brands' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Brands', href: '/#brands' },
+  { label: 'Menu', href: '/menu' },
+  { label: 'Contact', href: '/#contact' },
 ];
 
 export default function Navigation() {
@@ -29,7 +31,7 @@ export default function Navigation() {
         }`}
       >
         <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 lg:px-10">
-          <a href="#" className="relative z-10">
+          <Link href="/" className="relative z-10">
             <Image
               src="/images/celsius-logo.png"
               alt="Celsius Dessert Bar"
@@ -38,7 +40,7 @@ export default function Navigation() {
               className={`w-auto transition-all duration-500 ${scrolled ? 'h-9 lg:h-10' : 'h-10 lg:h-11'}`}
               priority
             />
-          </a>
+          </Link>
 
           {/* Desktop links */}
           <div className="hidden items-center gap-10 md:flex">
@@ -46,17 +48,25 @@ export default function Navigation() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-[13px] font-medium uppercase tracking-[0.15em] text-cream/70 transition-colors duration-300 hover:text-gold"
+                className={`text-[13px] font-medium uppercase tracking-[0.15em] transition-colors duration-300 ${
+                  scrolled
+                    ? 'text-[#1A1A1D]/70 hover:text-gold'
+                    : 'text-[#FBF8F0]/80 hover:text-gold-light'
+                }`}
               >
                 {link.label}
               </a>
             ))}
-            <a
-              href="#contact"
-              className="border border-gold/60 px-5 py-2 text-[13px] font-medium uppercase tracking-[0.15em] text-gold transition-all duration-300 hover:bg-gold hover:text-charcoal"
+            <Link
+              href="/#contact"
+              className={`border px-5 py-2 text-[13px] font-medium uppercase tracking-[0.15em] transition-all duration-300 ${
+                scrolled
+                  ? 'border-gold/60 text-gold hover:bg-gold hover:text-[#FBF8F0]'
+                  : 'border-gold-light/70 text-gold-light hover:bg-gold-light hover:text-[#1A1A1D]'
+              }`}
             >
               Enquire
-            </a>
+            </Link>
           </div>
 
           {/* Mobile hamburger */}
@@ -66,17 +76,23 @@ export default function Navigation() {
             aria-label="Toggle menu"
           >
             <span
-              className={`block h-[1.5px] w-6 bg-cream transition-all duration-300 ${
+              className={`block h-[1.5px] w-6 transition-all duration-300 ${
+                mobileOpen || scrolled ? 'bg-[#1A1A1D]' : 'bg-[#FBF8F0]'
+              } ${
                 mobileOpen ? 'translate-y-[6.5px] rotate-45' : ''
               }`}
             />
             <span
-              className={`block h-[1.5px] w-6 bg-cream transition-all duration-300 ${
+              className={`block h-[1.5px] w-6 transition-all duration-300 ${
+                mobileOpen || scrolled ? 'bg-[#1A1A1D]' : 'bg-[#FBF8F0]'
+              } ${
                 mobileOpen ? 'opacity-0' : ''
               }`}
             />
             <span
-              className={`block h-[1.5px] w-6 bg-cream transition-all duration-300 ${
+              className={`block h-[1.5px] w-6 transition-all duration-300 ${
+                mobileOpen || scrolled ? 'bg-[#1A1A1D]' : 'bg-[#FBF8F0]'
+              } ${
                 mobileOpen ? '-translate-y-[6.5px] -rotate-45' : ''
               }`}
             />
@@ -109,7 +125,7 @@ export default function Navigation() {
                 </motion.a>
               ))}
               <motion.a
-                href="#contact"
+                href="/#contact"
                 onClick={() => setMobileOpen(false)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

@@ -79,7 +79,11 @@ Theatrical but refined. Indulgent without being chaotic. Champagne-gold + teal o
 - Brand marquee: CSS `@keyframes brand-marquee` translateX -50%, 40s desktop / 25s mobile, paused on hover
 - Hover: tile scale 1.04, gold glow ring; CTA colour swap
 
-## Page Structure (single-page scroll)
+## Page Structure
+
+Two routes: `/` (single-page scroll, below) and `/menu` (flavour menu — dark smoke-poster hero band, Signature / Seasonal / Toppings editorial lists, CTA band → `/#contact`).
+
+### Homepage sections
 
 | # | Section | Component | Purpose |
 |---|---|---|---|
@@ -100,7 +104,7 @@ Single JSON file feeds every component. Schema overview:
 | `business` | object — name, legal_name, tagline, brand_tagline, about_text, address, phone, email, website, youtube_hero_url, google_maps_url, social, hours, webhook_url | Hero, About, Contact, Footer, Navigation |
 | `event_types` | string[] (8 entries) | Contact form select, Footer |
 | `packages` | array of {name, tier, guest_capacity, highlights[]} (3 entries — no prices) | Packages section, Contact form select |
-| `menu` | object — note + signature_flavours[] + custom_flavour_note | Packages footnote (custom_flavour_note) |
+| `menu` | object — note + signature[8]/seasonal[4]/toppings[8] ({name, description}) + rotation_note + custom_flavour_note | /menu page; Packages footnote (custom_flavour_note) |
 | `brand_partners` | array of {name, logo} (14 entries) | BrandMarquee |
 | `service_area` | string | (not currently rendered) |
 | `reviews` | empty array — placeholder until real reviews land | (Testimonials.tsx is dormant) |
@@ -119,6 +123,7 @@ Single JSON file feeds every component. Schema overview:
 /src/app/
   layout.tsx              — metadata, fonts, JSON-LD (FoodEstablishment + CateringService)
   page.tsx                — composes the section order
+  menu/page.tsx           — /menu route (flavour lists from data/agency.json menu.*)
   globals.css             — Tailwind + Celsius palette tokens + marquee CSS
 /src/components/
   Navigation.tsx, Hero.tsx, About.tsx, BrandMarquee.tsx,

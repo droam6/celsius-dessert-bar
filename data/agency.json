@@ -78,18 +78,33 @@
   ],
   "menu": {
     "note": "Placeholder menu — client to supply final flavour list.",
-    "signature_flavours": [
-      "Madagascan Vanilla Bean",
-      "Belgian Dark Chocolate",
-      "Salted Caramel Pretzel",
-      "Strawberries & Cream",
-      "Pistachio & Honey",
-      "Cookies & Cream",
-      "Mango Sorbet",
-      "Espresso Martini",
-      "Matcha White Chocolate",
-      "Lemon Cheesecake"
+    "signature": [
+      { "name": "Madagascan Vanilla Bean", "description": "Single-origin vanilla steeped into fresh cream, frozen in seconds so none of the perfume escapes." },
+      { "name": "Belgian Dark Chocolate", "description": "70% couverture folded through at -196°C — closer to frozen ganache than gelato." },
+      { "name": "Salted Caramel Pretzel", "description": "Burnt-sugar caramel, Murray River salt flakes, shards of dark-roasted pretzel." },
+      { "name": "Strawberries & Cream", "description": "Whole macerated strawberries swirled through sweet cream, plated in nitrogen fog." },
+      { "name": "Pistachio & Honey", "description": "Sicilian pistachio paste finished with a ribbon of raw honeycomb." },
+      { "name": "Cookies & Cream", "description": "House-baked charcoal biscuit crumbled through Madagascan vanilla." },
+      { "name": "Espresso Martini", "description": "A double shot of cold-pressed espresso with coffee-liqueur notes, frozen mid-swirl." },
+      { "name": "Matcha White Chocolate", "description": "Ceremonial-grade matcha balanced against slow-melted white chocolate." }
     ],
+    "seasonal": [
+      { "name": "Mango Sorbet", "description": "Kensington Pride mangoes at their peak — pressed, churned, nothing else." },
+      { "name": "Blood Orange Sorbet", "description": "Winter citrus juiced the morning we serve it, sharp and blush-red." },
+      { "name": "Spiced Poached Pear", "description": "Packham pears poached in chai spice, churned through brown-butter cream." },
+      { "name": "Lemon Myrtle Cheesecake", "description": "Native lemon myrtle, cultured cream and a torched biscuit crumb." }
+    ],
+    "toppings": [
+      { "name": "Torched Meringue", "description": "Italian meringue, blowtorched to order" },
+      { "name": "24-Karat Gold Leaf", "description": "Edible gold, applied by hand" },
+      { "name": "Honeycomb Shards", "description": "House-made, snapped over the scoop" },
+      { "name": "Candied Macadamia", "description": "Queensland nuts in burnt sugar" },
+      { "name": "Freeze-Dried Raspberry", "description": "Sharp, bright, shattered fine" },
+      { "name": "Single-Origin Cocoa Dust", "description": "A bitter finish for dark flavours" },
+      { "name": "Burnt Caramel Drizzle", "description": "Poured warm over the cold" },
+      { "name": "Toasted Coconut", "description": "Shaved and torched to amber" }
+    ],
+    "rotation_note": "Menu rotates seasonally. Ask us in store for today's flavours.",
     "custom_flavour_note": "Premium package guests receive a bespoke flavour developed by our chefs to match your event theme."
   },
   "brand_partners": [
