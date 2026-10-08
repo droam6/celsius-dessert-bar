@@ -22,6 +22,7 @@ const hanken = localFont({
 
 const siteUrl = "https://www.celsiusdessertbar.com.au";
 const business = agencyData.business;
+const siteLive = process.env.NEXT_PUBLIC_SITE_LIVE === "1";
 
 const title = "Liquid Nitrogen Gelato Catering Sydney | Celsius Dessert Bar";
 const description =
@@ -61,7 +62,9 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
-  robots: { index: true, follow: true },
+  // Stays out of search until launch day. Set NEXT_PUBLIC_SITE_LIVE=1 on the host when the
+  // real domain points here; until then every page carries noindex.
+  robots: siteLive ? { index: true, follow: true } : { index: false, follow: false },
 };
 
 // Structured data is built from data/agency.json so it can never drift from the page.
