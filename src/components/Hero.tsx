@@ -40,7 +40,7 @@ export default function Hero() {
         <h1 className="display text-[13.2vw] leading-[0.98] text-bone md:text-[clamp(4.5rem,9.6vw,9.25rem)]">
           <span className="rise">
             <span>Gelato, frozen</span>
-          </span>
+          </span>{' '}
           <span className="rise">
             <span>
               live at <em>&minus;196&deg;C</em>

@@ -70,7 +70,7 @@ export default function MenuPage() {
               The menu
             </h1>
             <p className="max-w-[22rem] text-[1rem] leading-[1.6] text-ink/70 lg:pb-4">
-              Gelato frozen to order with liquid nitrogen. {menu.rotation_note}
+              Gelato frozen to order with liquid nitrogen. {menu.rotation_note}{' '}
               {isSample && <span className="mt-3 block text-bronze">Sample menu.</span>}
             </p>
           </header>
