@@ -24,11 +24,13 @@ export default function Hero() {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         poster="/images/hero-smoke-poster.jpg"
         className="absolute inset-0 z-0 h-full w-full object-cover"
         aria-hidden="true"
       >
+        {/* Phones get the 720p file (about half the size). Browsers that ignore `media` just take the first source. */}
+        <source src="/videos/hero-smoke-720.mp4" type="video/mp4" media="(max-width: 767px)" />
         <source src="/videos/hero-smoke.mp4" type="video/mp4" />
       </video>
 

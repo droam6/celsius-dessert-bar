@@ -144,13 +144,14 @@ body {
 
 .rise > span {
   display: block;
-  animation: rise 1.1s cubic-bezier(0.2, 0.7, 0.1, 1) both;
+  animation: rise 1s cubic-bezier(0.2, 0.7, 0.1, 1) both;
 }
 
 .rise:nth-child(2) > span { animation-delay: 0.12s; }
 
+/* Starts part-way up so the words are painted on the first frame (keeps the largest paint early). */
 @keyframes rise {
-  from { transform: translateY(105%); }
+  from { transform: translateY(62%); }
   to   { transform: translateY(0); }
 }
 

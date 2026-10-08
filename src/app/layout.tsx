@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import agencyData from "@data/agency.json";
 import "./globals.css";
 
 // Self-hosted (SIL Open Font Licence, see src/fonts). No third-party font request.
@@ -20,49 +21,37 @@ const hanken = localFont({
 });
 
 const siteUrl = "https://www.celsiusdessertbar.com.au";
+const business = agencyData.business;
+
+const title = "Liquid Nitrogen Gelato Catering Sydney | Celsius Dessert Bar";
+const description =
+  "Liquid nitrogen gelato, frozen live at your event at \u2212196\u00b0C. Dessert catering for corporate events, brand launches and weddings across Sydney.";
 
 export const metadata: Metadata = {
-  title: "Celsius Dessert Bar | Live Liquid Nitrogen Gelato Sydney",
-  description:
-    "Liquid nitrogen gelato, frozen live at your event at \u2212196\u00b0C. Dessert catering for corporate events, brand launches and weddings across Sydney.",
-  keywords: [
-    "liquid nitrogen gelato Sydney",
-    "dessert catering Sydney",
-    "wedding dessert Sydney",
-    "corporate event catering",
-    "live gelato show",
-    "Celsius Dessert Bar",
-    "Chatswood gelato",
-  ],
+  title,
+  description,
   metadataBase: new URL(siteUrl),
-  alternates: {
-    canonical: siteUrl,
-    languages: {
-      "en-AU": siteUrl,
-    },
-  },
+  alternates: { canonical: siteUrl },
   openGraph: {
-    title: "Celsius Dessert Bar | Live Liquid Nitrogen Gelato Sydney",
-    description:
-      "Liquid nitrogen gelato, frozen live at your event. Dessert catering for corporate events, brand launches and weddings across Sydney.",
+    title,
+    description,
     type: "website",
     locale: "en_AU",
     url: siteUrl,
-    siteName: "Celsius Dessert Bar",
+    siteName: business.name,
     images: [
       {
         url: `${siteUrl}/images/og-default.jpg`,
         width: 1200,
         height: 630,
-        alt: "Celsius Dessert Bar — Live Liquid Nitrogen Gelato Sydney",
+        alt: "Celsius Dessert Bar: liquid nitrogen gelato catering in Sydney",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Celsius Dessert Bar | Live Liquid Nitrogen Gelato Sydney",
-    description:
-      "Liquid nitrogen gelato, frozen live at your event. Dessert catering for corporate events, brand launches and weddings across Sydney.",
+    title,
+    description,
     images: [`${siteUrl}/images/og-default.jpg`],
   },
   icons: {
@@ -70,74 +59,76 @@ export const metadata: Metadata = {
       { url: "/favicon.ico", sizes: "32x32" },
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
     ],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
+
+// Structured data is built from data/agency.json so it can never drift from the page.
+// IceCreamShop is the schema.org type for the kiosk; the event packages are listed as services.
+const dayCodes: Record<string, string[]> = {
+  "Mon – Fri": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+  "Sat – Sun": ["Saturday", "Sunday"],
+};
+
+function to24h(t: string): string {
+  const m = t.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!m) return t;
+  let h = Number(m[1]) % 12;
+  if (m[3].toUpperCase() === "PM") h += 12;
+  return `${String(h).padStart(2, "0")}:${m[2]}`;
+}
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "FoodEstablishment",
-  additionalType: "https://schema.org/CateringService",
-  name: "Celsius Dessert Bar",
-  legalName: "Celsius Dessert Bar",
+  "@type": "IceCreamShop",
+  "@id": `${siteUrl}/#business`,
+  name: business.name,
+  legalName: business.legal_name,
   url: siteUrl,
   logo: `${siteUrl}/images/celsius-logo.png`,
   image: `${siteUrl}/images/og-default.jpg`,
   description:
     "Liquid nitrogen gelato, frozen live at events across Sydney. Dessert catering for corporate events, brand activations, launches and weddings.",
-  telephone: "+61 451 073 136",
+  telephone: `+61 ${business.phone.replace(/^0/, "")}`,
+  email: business.email,
+  servesCuisine: "Gelato",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Kiosk 4, Chatswood Bus Interchange, 436 Victoria Avenue",
-    addressLocality: "Chatswood",
-    addressRegion: "NSW",
-    postalCode: "2067",
+    streetAddress: business.address.street,
+    addressLocality: business.address.suburb,
+    addressRegion: business.address.state,
+    postalCode: business.address.postcode,
     addressCountry: "AU",
   },
-  openingHours: ["Mo-Fr 07:00-17:00", "Sa-Su 12:00-17:00"],
-  sameAs: ["https://www.instagram.com/celsiusdessertbar/"],
-  areaServed: {
-    "@type": "City",
-    name: "Sydney",
-  },
+  hasMap: business.google_maps_url,
+  openingHoursSpecification: business.hours
+    .filter((slot) => dayCodes[slot.days])
+    .map((slot) => {
+      const [opens, closes] = slot.hours.split("–").map(to24h);
+      return {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: dayCodes[slot.days],
+        opens,
+        closes,
+      };
+    }),
+  sameAs: [business.social.instagram].filter(Boolean),
+  areaServed: { "@type": "City", name: "Sydney" },
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Liquid Nitrogen Gelato Catering Packages",
-    itemListElement: [
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Classic Package",
-          description:
-            "Up to 100 guests · 2 signature flavours · 2 chefs · 1 hour live nitrogen show · full equipment, setup and pack-down.",
-        },
+    name: "Liquid nitrogen gelato catering packages",
+    itemListElement: agencyData.packages.map((p) => ({
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        serviceType: "Dessert catering",
+        name: `${p.name} package`,
+        description: `${p.guests} guests. ${p.flavours}. ${p.service}. Includes ${agencyData.packages_included
+          .join(", ")
+          .toLowerCase()}.`,
       },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Signature Package",
-          description:
-            "Up to 150 guests · 2 signature flavours · 2 chefs · 1 hour live nitrogen show · full equipment, setup and pack-down.",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Premium Package",
-          description:
-            "150+ guests · 2 signature flavours plus a custom flavour designed for your event · 2 chefs · 1.5 hour live nitrogen show · full equipment, setup and pack-down.",
-        },
-      },
-    ],
+    })),
   },
 };
 
@@ -151,6 +142,7 @@ export default function RootLayout({
       <head>
         {/* Marks that script is running, so scroll entrances only hide content when they can also show it. */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.dataset.js='1'" }} />
+        <link rel="preconnect" href="https://i.ytimg.com" />
         {/* AWAITING_GTM_ID — Google Tag Manager snippet goes here */}
         <script
           type="application/ld+json"

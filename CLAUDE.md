@@ -88,7 +88,7 @@ Two routes: `/` and `/menu`.
 |---|---|---|---|
 | 1 | Navigation | `Navigation.tsx` | Clear over the hero, black once scrolled. Packages · Clients · Menu · Enquire |
 | 2 | Hero | `Hero.tsx` | Smoke film, headline at the bottom on a black scrim. Optional `business.announcement` line (null = hidden) |
-| 3 | Film | `Film.tsx` | The real event film (YouTube), full width, no device frame. Caption from `business.film_caption` |
+| 3 | Film | `Film.tsx` | The real event film (YouTube), full width, no device frame. Player mounts only when scrolled into view. Caption from `business.film_caption` |
 | 4 | Intro | `Intro.tsx` | One statement + two short paragraphs from `intro` |
 | 5 | Clients | `Clients.tsx` | Static one-colour logo grid |
 | 6 | Packages | `Packages.tsx` | One row per package on paper. No prices. Each "Enquire" preselects the package in the form |
@@ -128,7 +128,8 @@ Single JSON file feeds every component. Schema overview:
 ```
 /data/agency.json         — single source of truth for all content
 /src/app/
-  layout.tsx              — metadata, self-hosted fonts, JSON-LD
+  layout.tsx              — metadata, self-hosted fonts, JSON-LD (IceCreamShop, built from agency.json)
+  not-found.tsx           — 404 page
   page.tsx                — composes the section order
   menu/page.tsx           — /menu route
   globals.css             — Tailwind + tokens + the few hand-written classes

@@ -125,6 +125,12 @@ Two-page site (/ + /menu), light editorial palette with dark cinematic heroes. H
 - Not verified here: the YouTube film and the smoke video playing (the cloud workspace cannot reach YouTube or decode H.264). Check both in a real browser.
 - Independent design review run before hand-off; its findings were applied except the two that need assets: real photos, and the original film footage for the hero.
 
+## Rework — SEO + speed pass (8 Oct 2026)
+- Metadata, structured data, sitemap dates, styled 404, lighter hero video (+720p for phones), lazy YouTube player, smaller wordmark file. See D27–D29.
+- Lighthouse (mobile, simulated, local static server): home performance 90, accessibility 100, SEO 100; menu 100 / 100 / 100. The one best-practice miss on home is a console error from YouTube being unreachable in the cloud workspace.
+- Not verified here: video playback (workspace browser has no H.264) and that phones pick the 720p file. Check in a real browser.
+- Jack is running a Claude Code job on his PC to rescue the event photos from a part-corrupt USB stick into `Desktop/celsius-photos` (outside the repo). Contact sheets come back to the web chat for picking.
+
 ## Next
 - Jack: review `rework` in the browser, then photos (faces cropped or blurred before commit), then SEO, Google Business Profile, summer offer wording
 - Launch blockers unchanged: form endpoint, real menu, hosting + DNS at OnlyDomains, ABN, privacy policy, terms

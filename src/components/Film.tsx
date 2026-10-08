@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
 import { FadeIn } from './FadeIn';
 import agencyData from '@data/agency.json';
 
@@ -12,16 +15,37 @@ function youtubeIdFromUrl(url: string): string {
   }
 }
 
-/* The real event film, shown as wide as the page allows. No device frame. */
+/* The real event film, shown as wide as the page allows. No device frame.
+   The YouTube player is heavy, so it is only loaded once the frame scrolls into view;
+   until then the frame shows the film's own still. */
 export default function Film() {
   const { youtube_hero_url, film_caption } = agencyData.business;
   const ytId = youtubeIdFromUrl(youtube_hero_url);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const [play, setPlay] = useState(false);
+
+  useEffect(() => {
+    const el = frameRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPlay(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   if (!ytId) return null;
 
   const embedSrc =
     `https://www.youtube.com/embed/${ytId}` +
     `?autoplay=1&mute=1&loop=1&playlist=${ytId}` +
-    `&controls=0&modestbranding=1&rel=0&playsinline=1`;
+    `&controls=0&rel=0&playsinline=1`;
 
   return (
     <section id="film" aria-labelledby="film-title" className="pt-6 lg:pt-10">
@@ -32,17 +56,22 @@ export default function Film() {
         <FadeIn>
           <figure>
             <div
+              ref={frameRef}
               className="relative aspect-video w-full overflow-hidden bg-ink-soft bg-cover bg-center"
-              style={{ backgroundImage: `url(https://i.ytimg.com/vi/${ytId}/hqdefault.jpg)` }}
+              style={{
+                // Sharp still first; the smaller one sits underneath in case the large one does not exist.
+                backgroundImage: `url(https://i.ytimg.com/vi/${ytId}/maxresdefault.jpg), url(https://i.ytimg.com/vi/${ytId}/hqdefault.jpg)`,
+              }}
             >
-              <iframe
-                src={embedSrc}
-                title={`Celsius Dessert Bar film: ${film_caption}`}
-                allow="autoplay; encrypted-media; picture-in-picture"
-                allowFullScreen
-                loading="lazy"
-                className="absolute inset-0 h-full w-full border-0"
-              />
+              {play && (
+                <iframe
+                  src={embedSrc}
+                  title={`Celsius Dessert Bar film: ${film_caption}`}
+                  allow="autoplay; encrypted-media; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 h-full w-full border-0"
+                />
+              )}
             </div>
             <figcaption className="mt-2 flex flex-wrap items-center justify-between gap-x-8 text-[0.875rem] text-bone/60">
               <span>{film_caption}</span>
