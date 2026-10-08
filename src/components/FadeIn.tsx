@@ -1,36 +1,44 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 interface FadeInProps {
   children: ReactNode;
   className?: string;
   delay?: number;
-  direction?: 'up' | 'down' | 'left' | 'right' | 'none';
 }
 
-export function FadeIn({ children, className, delay = 0, direction = 'up' }: FadeInProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
+/* One quiet entrance, used once per block. The hiding is done in CSS (globals.css) and only
+   when script is running and the visitor has not asked for reduced motion, so content is
+   never left invisible. */
+export function FadeIn({ children, className, delay = 0 }: FadeInProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
 
-  const directionOffset = {
-    up: { y: 30 },
-    down: { y: -30 },
-    left: { x: 40 },
-    right: { x: -40 },
-    none: {},
-  };
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShown(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: '0px 0px -60px 0px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, ...directionOffset[direction] }}
-      animate={isInView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, ...directionOffset[direction] }}
-      transition={{ duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      data-reveal={shown ? 'in' : 'out'}
+      style={delay ? { transitionDelay: `${delay}s` } : undefined}
       className={className}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

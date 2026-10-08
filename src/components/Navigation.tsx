@@ -1,143 +1,124 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const navLinks = [
-  { label: 'Brands', href: '/#brands' },
+  { label: 'Packages', href: '/#packages' },
+  { label: 'Clients', href: '/#clients' },
   { label: 'Menu', href: '/menu' },
-  { label: 'Contact', href: '/#contact' },
 ];
 
-export default function Navigation() {
+export default function Navigation({ onPaper = false }: { onPaper?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  /* Over the black hero the bar is clear. Once scrolled (or on the paper menu page) it is solid black. */
+  const solid = scrolled || onPaper || open;
+
   return (
-    <>
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
+        solid ? 'bg-ink' : 'bg-transparent'
+      }`}
+    >
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? 'bg-[rgba(251,248,240,0.95)] py-3 backdrop-blur-md border-b border-[var(--color-border)]'
-            : 'bg-transparent py-5'
-        }`}
+        aria-label="Main"
+        className="mx-auto flex h-[4.5rem] max-w-[1360px] items-center justify-between px-6 lg:px-12"
       >
-        <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 lg:px-10">
-          <Link href="/" className="relative z-10">
-            <Image
-              src="/images/celsius-logo.png"
-              alt="Celsius Dessert Bar"
-              width={180}
-              height={83}
-              className={`w-auto transition-all duration-500 ${scrolled ? 'h-9 lg:h-10' : 'h-10 lg:h-11'}`}
-              priority
-            />
-          </Link>
+        <Link href="/" className="relative z-10 -ml-1 p-1" onClick={() => setOpen(false)}>
+          <Image
+            src="/images/celsius-logo-mono.png"
+            alt="Celsius Dessert Bar, home"
+            width={180}
+            height={83}
+            className="h-10 w-auto"
+            priority
+          />
+        </Link>
 
-          {/* Desktop links */}
-          <div className="hidden items-center gap-10 md:flex">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={`text-[13px] font-medium uppercase tracking-[0.15em] transition-colors duration-300 ${
-                  scrolled
-                    ? 'text-[#1A1A1D]/70 hover:text-gold'
-                    : 'text-[#FBF8F0]/80 hover:text-gold-light'
-                }`}
-              >
-                {link.label}
-              </a>
-            ))}
+        <div className="hidden items-center gap-10 md:flex">
+          {navLinks.map((l) => (
             <Link
-              href="/#contact"
-              className={`border px-5 py-2 text-[13px] font-medium uppercase tracking-[0.15em] transition-all duration-300 ${
-                scrolled
-                  ? 'border-gold/60 text-gold hover:bg-gold hover:text-[#FBF8F0]'
-                  : 'border-gold-light/70 text-gold-light hover:bg-gold-light hover:text-[#1A1A1D]'
-              }`}
+              key={l.href}
+              href={l.href}
+              className="text-[0.9375rem] text-bone/80 transition-colors hover:text-bone"
             >
-              Enquire
+              {l.label}
             </Link>
-          </div>
-
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="relative z-10 flex flex-col gap-[5px] md:hidden"
-            aria-label="Toggle menu"
+          ))}
+          <Link
+            href="/#contact"
+            className="border border-bone/45 px-5 py-2 text-[0.9375rem] text-bone transition-colors hover:border-bone hover:bg-bone hover:text-ink"
           >
-            <span
-              className={`block h-[1.5px] w-6 transition-all duration-300 ${
-                mobileOpen || scrolled ? 'bg-[#1A1A1D]' : 'bg-[#FBF8F0]'
-              } ${
-                mobileOpen ? 'translate-y-[6.5px] rotate-45' : ''
-              }`}
-            />
-            <span
-              className={`block h-[1.5px] w-6 transition-all duration-300 ${
-                mobileOpen || scrolled ? 'bg-[#1A1A1D]' : 'bg-[#FBF8F0]'
-              } ${
-                mobileOpen ? 'opacity-0' : ''
-              }`}
-            />
-            <span
-              className={`block h-[1.5px] w-6 transition-all duration-300 ${
-                mobileOpen || scrolled ? 'bg-[#1A1A1D]' : 'bg-[#FBF8F0]'
-              } ${
-                mobileOpen ? '-translate-y-[6.5px] -rotate-45' : ''
-              }`}
-            />
-          </button>
+            Enquire
+          </Link>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          className="relative z-10 -mr-2 flex h-12 w-12 items-center justify-center md:hidden"
+        >
+          <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
+          <span aria-hidden="true" className="relative block h-3 w-7">
+            <span
+              className={`absolute left-0 top-0 block h-px w-7 bg-bone transition-transform duration-300 ${
+                open ? 'translate-y-[6px] rotate-45' : ''
+              }`}
+            />
+            <span
+              className={`absolute bottom-0 left-0 block h-px w-7 bg-bone transition-transform duration-300 ${
+                open ? '-translate-y-[5px] -rotate-45' : ''
+              }`}
+            />
+          </span>
+        </button>
       </nav>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-charcoal/98 md:hidden"
-          >
-            <div className="flex flex-col items-center gap-8">
-              {navLinks.map((link, i) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.07 }}
-                  className="text-[15px] font-medium uppercase tracking-[0.2em] text-cream/80 transition-colors hover:text-gold"
-                >
-                  {link.label}
-                </motion.a>
-              ))}
-              <motion.a
-                href="/#contact"
-                onClick={() => setMobileOpen(false)}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: navLinks.length * 0.07 }}
-                className="mt-4 border border-gold/60 px-8 py-3 text-[13px] font-medium uppercase tracking-[0.15em] text-gold transition-all hover:bg-gold hover:text-charcoal"
+      <div
+        id="mobile-menu"
+        hidden={!open}
+        className="fixed inset-x-0 bottom-0 top-[4.5rem] overflow-y-auto bg-ink px-6 pb-10 pt-8 md:hidden"
+      >
+        <ul className="border-t border-bone/15">
+          {navLinks.map((l) => (
+            <li key={l.href} className="border-b border-bone/15">
+              <Link
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="display block py-5 text-[2.25rem] text-bone"
               >
-                Enquire
-              </motion.a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+                {l.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <Link href="/#contact" onClick={() => setOpen(false)} className="btn mt-10 w-full">
+          Enquire
+        </Link>
+      </div>
+    </header>
   );
 }

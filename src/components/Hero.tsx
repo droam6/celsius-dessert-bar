@@ -1,24 +1,23 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
 import agencyData from '@data/agency.json';
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.play().catch(() => {});
+    videoRef.current?.play().catch(() => {});
   }, []);
+
+  const announcement = agencyData.business.announcement;
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center overflow-hidden bg-[#FBF8F0] pt-24 pb-24"
+      className="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-ink"
     >
-      {/* Hero background video — full opacity, native speed, no effects */}
+      {/* Background video — full opacity, native speed, no effects on the element itself */}
       <video
         ref={videoRef}
         autoPlay
@@ -27,71 +26,42 @@ export default function Hero() {
         playsInline
         preload="auto"
         poster="/images/hero-smoke-poster.jpg"
-        className="absolute inset-0 w-full h-full object-cover z-0"
+        className="absolute inset-0 z-0 h-full w-full object-cover"
         aria-hidden="true"
       >
         <source src="/videos/hero-smoke.mp4" type="video/mp4" />
       </video>
 
-      {/* Top scrim — grounds the eyebrow + headline when smoke drifts behind them.
-          Legibility overlay on a sibling div, NOT applied to the video itself. */}
-      <div className="absolute inset-x-0 top-0 h-[55%] bg-gradient-to-b from-[rgba(14,14,16,0.65)] to-transparent z-[1] pointer-events-none" />
+      <div className="hero-scrim" aria-hidden="true" />
 
-      {/* Bottom gradient — needed for text legibility, NOT applied to the video itself */}
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-[rgba(251,248,240,0.75)] z-[1] pointer-events-none" />
+      <div className="relative z-10 mx-auto w-full max-w-[1360px] px-6 pb-10 pt-40 lg:px-12 lg:pb-14">
+        <h1 className="display text-[13.2vw] leading-[0.98] text-bone md:text-[clamp(4.5rem,9.6vw,9.25rem)]">
+          <span className="rise">
+            <span>Gelato, frozen</span>
+          </span>
+          <span className="rise">
+            <span>
+              live at <em>&minus;196&deg;C</em>
+            </span>
+          </span>
+        </h1>
 
-      {/* Text content */}
-      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 lg:px-10">
-        <div className="max-w-4xl">
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-5 text-[11px] font-medium uppercase tracking-[0.3em] text-gold-light [text-shadow:0_1px_12px_rgba(14,14,16,0.6)]"
-          >
-            {agencyData.business.tagline}
-          </motion.p>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.35 }}
-            className="font-heading text-[clamp(2.75rem,6vw,5.5rem)] leading-[1.05] text-[#FBF8F0] [text-shadow:0_2px_28px_rgba(14,14,16,0.55)]"
-          >
-            Live Liquid Nitrogen Gelato.
-            <br />
-            <span className="text-teal">Crafted at -196°C.</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.55 }}
-            className="mt-6 max-w-2xl text-[15px] leading-[1.75] text-[#1A1A1D]/75 lg:text-[16px]"
-          >
-            Theatre dessert catering for weddings, corporate events, brand activations and
-            private celebrations across Sydney. Every scoop crafted in front of your guests.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.75 }}
-            className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center"
-          >
-            <a
-              href="#contact"
-              className="inline-block bg-gold px-8 py-3.5 text-[13px] font-medium uppercase tracking-[0.15em] text-charcoal transition-all duration-300 hover:bg-gold-light"
-            >
-              Enquire for your event
+        <div className="settle mt-9 flex flex-col gap-7 border-t border-bone/25 pt-7 lg:mt-12 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+          <div className="max-w-[30rem]">
+            <p className="text-[1.0625rem] leading-[1.6] text-bone/85 lg:text-[1.125rem]">
+              A liquid nitrogen dessert bar for corporate events, brand launches and weddings
+              across Sydney.
+            </p>
+            {announcement && <p className="mt-3 text-[0.9375rem] text-champagne">{announcement}</p>}
+          </div>
+          <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
+            <a href="#contact" className="btn">
+              Enquire
             </a>
-            <a
-              href="#packages"
-              className="inline-block border border-[#1A1A1D]/35 px-8 py-3.5 text-[13px] font-medium uppercase tracking-[0.15em] text-[#1A1A1D] transition-all duration-300 hover:border-[#1A1A1D] hover:bg-[#1A1A1D]/5"
-            >
-              View packages
+            <a href="#packages" className="link flex min-h-12 items-center text-[0.9375rem] text-bone">
+              See the packages
             </a>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

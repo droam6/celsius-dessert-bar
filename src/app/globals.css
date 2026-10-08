@@ -1,182 +1,255 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Celsius palette — LIGHT-FIRST. Cream surfaces, deep teal + deep gold accents.
-     Bosland-era class names (bg-charcoal, text-cream, etc.) are kept and aliased
-     to light values so the inversion needs zero component refactoring. */
+  /* Celsius — dark, cinematic. Black, bone, one metal. Mint lives in the logo only. */
+  --color-ink: #000000;        /* page black: matches the black of the hero film exactly */
+  --color-ink-soft: #121212;   /* raised surface on black */
+  --color-bone: #F1EDE4;       /* text on black */
+  --color-paper: #ECE6DA;      /* the one light surface: packages + menu card */
+  --color-champagne: #C9AE84;  /* metal accent on black */
+  --color-bronze: #6E5837;     /* the same metal, dark enough for text on paper */
 
-  /* Light surfaces */
-  --color-bg: #FBF8F0;                 /* primary cream background */
-  --color-bg-elevated: #FFFFFF;        /* white — featured panels, form fields */
-  --color-bg-deep: #F0EBDD;            /* deeper cream — Packages + Footer band */
-
-  /* Bosland-era class aliases — flipped to light surfaces */
-  --color-charcoal: #FBF8F0;           /* bg-charcoal → cream */
-  --color-charcoal-light: #FFFFFF;     /* bg-charcoal-light → white */
-  --color-charcoal-dark: #F0EBDD;      /* bg-charcoal-dark → deeper cream */
-
-  /* Text */
-  --color-text: #1A1A1D;
-  --color-cream: #1A1A1D;              /* text-cream → near-black */
-  --color-warm-white: #1A1A1D;         /* text-warm-white → near-black */
-  --color-muted: rgba(26, 26, 29, 0.6);
-
-  /* Teal — deepened for legibility on cream */
-  --color-teal: #2F8F89;               /* primary teal accent */
-  --color-teal-deep: #1F6B66;          /* hover/active */
-  --color-teal-bright: #5DBFB8;        /* legacy bright — accent only, not primary */
-
-  /* Gold — deepened for cream */
-  --color-gold: #A88947;               /* primary gold (CTAs, eyebrows, ribbons) */
-  --color-gold-light: #C9A86A;         /* hover / lighter accent */
-  --color-gold-dark: #8A6F39;          /* deeper sub-accent */
-
-  --color-border: rgba(47, 143, 137, 0.18);
-
-  --font-heading: var(--font-dm-serif), "Georgia", serif;
-  --font-body: var(--font-dm-sans), "Helvetica Neue", sans-serif;
+  --font-display: var(--font-bodoni), "Bodoni MT", Didot, "Times New Roman", serif;
+  --font-body: var(--font-hanken), "Helvetica Neue", Arial, sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--color-ink);
+  color: var(--color-bone);
   font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: var(--color-gold);
-  color: #FBF8F0;
+  background: var(--color-champagne);
+  color: var(--color-ink);
 }
 
-/* ─────────── Brand marquee ─────────── */
-
-@keyframes brand-marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+:focus-visible {
+  outline: 2px solid var(--color-champagne);
+  outline-offset: 3px;
 }
 
-.brand-marquee-track {
-  animation: brand-marquee 40s linear infinite;
-  will-change: transform;
+.on-paper :focus-visible {
+  outline-color: var(--color-ink);
 }
 
-.brand-marquee-track:hover {
-  animation-play-state: paused;
+/* ─────────── Type ─────────── */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-optical-sizing: auto;
+  letter-spacing: -0.012em;
+  line-height: 1.04;
 }
 
-@media (max-width: 768px) {
-  .brand-marquee-track {
-    animation-duration: 25s;
-  }
+.display em {
+  font-style: italic;
+  letter-spacing: -0.02em;
 }
 
-/* Tiles — chrome stripped on light palette. Logos sit directly on the section bg. */
-.brand-tile {
-  display: flex;
+/* Didone hairlines disappear at reading sizes. Below about 40px use the low-contrast
+   optical size and a touch more weight so hyphens, plus signs and thin strokes survive. */
+.display-sm {
+  font-family: var(--font-display);
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 11;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+}
+
+/* Small functional label: table row heads, captions, form labels. Never a heading garnish. */
+.label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ─────────── Links and buttons ─────────── */
+
+.btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 120px;
-  height: 56px;
-  padding: 0 18px;
-  transition: transform 0.3s ease;
+  min-height: 3rem;
+  padding: 0 1.75rem;
+  background: var(--color-bone);
+  color: var(--color-ink);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-.brand-tile:hover {
-  transform: scale(1.04);
+.btn:hover {
+  background: var(--color-champagne);
 }
 
-@media (min-width: 768px) {
-  .brand-tile {
-    min-width: 160px;
-    height: 72px;
-    padding: 0 24px;
+.on-paper .btn {
+  background: var(--color-ink);
+  color: var(--color-bone);
+}
+
+.on-paper .btn:hover {
+  background: var(--color-bronze);
+}
+
+.btn[disabled] {
+  opacity: 0.5;
+}
+
+.link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.35em;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  transition: text-decoration-color 0.25s ease;
+}
+
+.link:hover {
+  text-decoration-color: currentColor;
+}
+
+/* ─────────── Hero ─────────── */
+
+/* Black from the bottom so the type sits on black, not on white fog.
+   Lives on a sibling of the video; the video itself has no effects. */
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.92) 30%, rgba(0, 0, 0, 0.78) 50%, rgba(0, 0, 0, 0.5) 66%, rgba(0, 0, 0, 0) 88%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 22%);
+}
+
+/* Headline rises out of a clipped line. CSS only, so it never waits for script. */
+.rise {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.rise > span {
+  display: block;
+  animation: rise 1.1s cubic-bezier(0.2, 0.7, 0.1, 1) both;
+}
+
+.rise:nth-child(2) > span { animation-delay: 0.12s; }
+
+@keyframes rise {
+  from { transform: translateY(105%); }
+  to   { transform: translateY(0); }
+}
+
+.settle {
+  animation: settle 1.2s ease 0.5s both;
+}
+
+@keyframes settle {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* On phones the headline is small enough for the hairlines (and the minus sign) to thin out. */
+@media (max-width: 767px) {
+  #hero h1 {
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" 30;
+    font-weight: 500;
   }
 }
 
-/* Logos that are white-on-transparent need a contrast pill or they vanish on cream. */
-.brand-tile[data-needs-dark-bg="true"] {
-  background: var(--color-text);
-  border-radius: 12px;
-  padding: 12px 24px;
-}
+/* ─────────── Client logos: one colour, still, optically matched ─────────── */
 
-.brand-tile-logo {
-  max-height: 32px;
-  max-width: 100%;
+.logo-mono {
+  height: calc(1.5rem * var(--s, 1));
   width: auto;
-  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.82;
 }
+
+/* Stacked or emblem marks need more height to carry the same weight as a wordmark. */
+.logo-mono--tall { height: calc(2.5rem * var(--s, 1)); }
 
 @media (min-width: 768px) {
-  .brand-tile-logo {
-    max-height: 44px;
-  }
+  .logo-mono { height: calc(1.75rem * var(--s, 1)); }
+  .logo-mono--tall { height: calc(3.1rem * var(--s, 1)); }
 }
 
-/* ─────────── Packages — card elevation on cream ─────────── */
+/* ─────────── Fields: a line, a label, nothing else ─────────── */
 
-.package-card {
-  box-shadow:
-    0 4px 24px rgba(26, 26, 29, 0.06),
-    0 1px 4px rgba(26, 26, 29, 0.04);
+.field {
+  display: block;
+  width: 100%;
+  padding: 0.7rem 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-bone) 32%, transparent);
+  border-radius: 0;
+  color: var(--color-bone);
+  font: inherit;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
 }
 
-.package-card:hover {
-  box-shadow:
-    0 12px 40px rgba(26, 26, 29, 0.10),
-    0 2px 8px rgba(26, 26, 29, 0.06);
-}
+.field:hover { border-bottom-color: color-mix(in srgb, var(--color-bone) 60%, transparent); }
 
-.package-card--featured {
-  box-shadow:
-    0 18px 50px rgba(26, 26, 29, 0.12),
-    0 4px 12px rgba(26, 26, 29, 0.06);
-}
-
-.package-card--featured:hover {
-  box-shadow:
-    0 24px 60px rgba(26, 26, 29, 0.14),
-    0 6px 16px rgba(26, 26, 29, 0.08);
-}
-
-/* ─────────── Contact form — fields need real chrome on cream ─────────── */
-
-#contact form input,
-#contact form select,
-#contact form textarea {
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-#contact form input::placeholder,
-#contact form textarea::placeholder {
-  color: rgba(26, 26, 29, 0.4);
-}
-
-#contact form input:focus,
-#contact form select:focus,
-#contact form textarea:focus {
-  border-color: var(--color-teal);
+.field:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(47, 143, 137, 0.12);
+  border-bottom-color: var(--color-champagne);
+  box-shadow: 0 1px 0 0 var(--color-champagne);
+}
+
+select.field {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23F1EDE4' stroke-width='1.3'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.15rem center;
+  padding-right: 1.5rem;
+}
+
+select.field option {
+  background: #fff;
+  color: #000;
+}
+
+/* ─────────── Scroll entrance (FadeIn.tsx) ─────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-js] [data-reveal] {
+    transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.1, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.1, 1);
+  }
+  html[data-js] [data-reveal="out"] {
+    opacity: 0;
+    transform: translateY(14px);
+  }
 }
 
 /* ─────────── Reduced motion ─────────── */
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   #hero video { display: none; }
   #hero {
     background-image: url('/images/hero-smoke-poster.jpg');
     background-size: cover;
     background-position: center;
   }
-  .brand-marquee-track { animation: none !important; }
+  .rise > span,
+  .settle { animation: none; }
 }

@@ -26,20 +26,28 @@
       "tiktok": null
     },
     "hours": [
-      { "days": "Mon – Fri", "hours": "7:00 AM – 5:00 PM" },
-      { "days": "Sat – Sun", "hours": "12:00 PM – 5:00 PM" }
+      {
+        "days": "Mon – Fri",
+        "hours": "7:00 AM – 5:00 PM"
+      },
+      {
+        "days": "Sat – Sun",
+        "hours": "12:00 PM – 5:00 PM"
+      }
     ],
-    "webhook_url": null
+    "webhook_url": null,
+    "film_caption": "Lancôme event, Myer Sydney",
+    "announcement": null
   },
   "event_types": [
-    "Weddings",
-    "Corporate Events & Brand Activations",
-    "Private Parties",
-    "Product Launches",
-    "Gala Dinners & Galas",
-    "Birthdays & Milestones",
-    "Festivals & Public Events",
-    "Film, TV & Premiere Events"
+    "Corporate event or brand activation",
+    "Product launch",
+    "Gala dinner",
+    "Wedding",
+    "Private party",
+    "Birthday or milestone",
+    "Festival or public event",
+    "Film, TV or premiere event"
   ],
   "packages": [
     {
@@ -51,7 +59,10 @@
         "2 professional gelato chefs",
         "1 hour live nitrogen show",
         "Full equipment, setup and pack-down"
-      ]
+      ],
+      "guests": "Up to 100",
+      "flavours": "2 flavours",
+      "service": "1 hour of live service"
     },
     {
       "name": "Signature",
@@ -62,7 +73,10 @@
         "2 professional gelato chefs",
         "1 hour live nitrogen show",
         "Full equipment, setup and pack-down"
-      ]
+      ],
+      "guests": "Up to 150",
+      "flavours": "2 flavours",
+      "service": "1 hour of live service"
     },
     {
       "name": "Premium",
@@ -73,55 +87,197 @@
         "2 professional gelato chefs",
         "1.5 hour live nitrogen show",
         "Full equipment, setup and pack-down"
-      ]
+      ],
+      "guests": "150+",
+      "flavours": "2 flavours, plus one created for your event",
+      "service": "1.5 hours of live service"
     }
   ],
   "menu": {
     "note": "Placeholder menu — client to supply final flavour list.",
     "signature": [
-      { "name": "Madagascan Vanilla Bean", "description": "Single-origin vanilla steeped into fresh cream, frozen in seconds so none of the perfume escapes." },
-      { "name": "Belgian Dark Chocolate", "description": "70% couverture folded through at -196°C — closer to frozen ganache than gelato." },
-      { "name": "Salted Caramel Pretzel", "description": "Burnt-sugar caramel, Murray River salt flakes, shards of dark-roasted pretzel." },
-      { "name": "Strawberries & Cream", "description": "Whole macerated strawberries swirled through sweet cream, plated in nitrogen fog." },
-      { "name": "Pistachio & Honey", "description": "Sicilian pistachio paste finished with a ribbon of raw honeycomb." },
-      { "name": "Cookies & Cream", "description": "House-baked charcoal biscuit crumbled through Madagascan vanilla." },
-      { "name": "Espresso Martini", "description": "A double shot of cold-pressed espresso with coffee-liqueur notes, frozen mid-swirl." },
-      { "name": "Matcha White Chocolate", "description": "Ceremonial-grade matcha balanced against slow-melted white chocolate." }
+      {
+        "name": "Vanilla Bean",
+        "description": "Single-origin vanilla steeped into fresh cream, frozen in seconds so none of the perfume escapes."
+      },
+      {
+        "name": "Dark Chocolate",
+        "description": "70% couverture folded through at -196°C — closer to frozen ganache than gelato."
+      },
+      {
+        "name": "Salted Caramel Pretzel",
+        "description": "Burnt-sugar caramel, Murray River salt flakes, shards of dark-roasted pretzel."
+      },
+      {
+        "name": "Strawberries & Cream",
+        "description": "Whole macerated strawberries swirled through sweet cream, plated in nitrogen fog."
+      },
+      {
+        "name": "Pistachio & Honey",
+        "description": "Sicilian pistachio paste finished with a ribbon of raw honeycomb."
+      },
+      {
+        "name": "Cookies & Cream",
+        "description": "House-baked charcoal biscuit crumbled through Madagascan vanilla."
+      },
+      {
+        "name": "Espresso Martini",
+        "description": "A double shot of cold-pressed espresso with coffee-liqueur notes, frozen mid-swirl."
+      },
+      {
+        "name": "Matcha White Chocolate",
+        "description": "Ceremonial-grade matcha balanced against slow-melted white chocolate."
+      }
     ],
     "seasonal": [
-      { "name": "Mango Sorbet", "description": "Kensington Pride mangoes at their peak — pressed, churned, nothing else." },
-      { "name": "Blood Orange Sorbet", "description": "Winter citrus juiced the morning we serve it, sharp and blush-red." },
-      { "name": "Spiced Poached Pear", "description": "Packham pears poached in chai spice, churned through brown-butter cream." },
-      { "name": "Lemon Myrtle Cheesecake", "description": "Native lemon myrtle, cultured cream and a torched biscuit crumb." }
+      {
+        "name": "Mango Sorbet",
+        "description": "Kensington Pride mangoes at their peak — pressed, churned, nothing else."
+      },
+      {
+        "name": "Blood Orange Sorbet",
+        "description": "Winter citrus juiced the morning we serve it, sharp and blush-red."
+      },
+      {
+        "name": "Spiced Poached Pear",
+        "description": "Packham pears poached in chai spice, churned through brown-butter cream."
+      },
+      {
+        "name": "Lemon Myrtle Cheesecake",
+        "description": "Native lemon myrtle, cultured cream and a torched biscuit crumb."
+      }
     ],
     "toppings": [
-      { "name": "Torched Meringue", "description": "Italian meringue, blowtorched to order" },
-      { "name": "24-Karat Gold Leaf", "description": "Edible gold, applied by hand" },
-      { "name": "Honeycomb Shards", "description": "House-made, snapped over the scoop" },
-      { "name": "Candied Macadamia", "description": "Queensland nuts in burnt sugar" },
-      { "name": "Freeze-Dried Raspberry", "description": "Sharp, bright, shattered fine" },
-      { "name": "Single-Origin Cocoa Dust", "description": "A bitter finish for dark flavours" },
-      { "name": "Burnt Caramel Drizzle", "description": "Poured warm over the cold" },
-      { "name": "Toasted Coconut", "description": "Shaved and torched to amber" }
+      {
+        "name": "Torched Meringue",
+        "description": "Italian meringue, blowtorched to order"
+      },
+      {
+        "name": "Gold Leaf",
+        "description": "Edible gold, applied by hand"
+      },
+      {
+        "name": "Honeycomb Shards",
+        "description": "House-made, snapped over the scoop"
+      },
+      {
+        "name": "Candied Macadamia",
+        "description": "Queensland nuts in burnt sugar"
+      },
+      {
+        "name": "Freeze-Dried Raspberry",
+        "description": "Sharp, bright, shattered fine"
+      },
+      {
+        "name": "Cocoa Dust",
+        "description": "A bitter finish for dark flavours"
+      },
+      {
+        "name": "Burnt Caramel Drizzle",
+        "description": "Poured warm over the cold"
+      },
+      {
+        "name": "Toasted Coconut",
+        "description": "Shaved and torched to amber"
+      }
     ],
-    "rotation_note": "Menu rotates seasonally. Ask us in store for today's flavours.",
+    "rotation_note": "The menu changes with the season. Ask at the kiosk for today's flavours.",
     "custom_flavour_note": "Premium package guests receive a bespoke flavour developed by our chefs to match your event theme."
   },
   "brand_partners": [
-    { "name": "Lancôme", "logo": "/images/brands/lancome.svg" },
-    { "name": "Honda", "logo": "/images/brands/honda.svg" },
-    { "name": "Mitsubishi Motors", "logo": "/images/brands/mitsubishi-motors.svg" },
-    { "name": "Subaru", "logo": "/images/brands/subaru.svg" },
-    { "name": "Hitachi", "logo": "/images/brands/hitachi.svg" },
-    { "name": "Google", "logo": "/images/brands/google.svg" },
-    { "name": "Salesforce", "logo": "/images/brands/salesforce.svg" },
-    { "name": "Deloitte", "logo": "/images/brands/deloitte.svg" },
-    { "name": "Carriageworks", "logo": "/images/brands/carriageworks.svg" },
-    { "name": "Doltone House", "logo": "/images/brands/doltone-house.svg" },
-    { "name": "Navarra Venues", "logo": "/images/brands/navarra-venues.svg" },
-    { "name": "Royal Randwick", "logo": "/images/brands/royal-randwick.svg" },
-    { "name": "Pendolino", "logo": "/images/brands/pendolino.png" },
-    { "name": "The Lakes Golf Club", "logo": "/images/brands/the-lakes-golf-club.jpg" }
+    {
+      "name": "Lancôme",
+      "logo": "/images/brands/lancome.svg",
+      "kind": "brand",
+      "shape": "wide",
+      "scale": 1.15
+    },
+    {
+      "name": "Honda",
+      "logo": "/images/brands/honda.svg",
+      "kind": "brand",
+      "shape": "tall"
+    },
+    {
+      "name": "Mitsubishi Motors",
+      "logo": "/images/brands/mitsubishi-motors.svg",
+      "kind": "brand",
+      "shape": "tall"
+    },
+    {
+      "name": "Subaru",
+      "logo": "/images/brands/subaru.svg",
+      "kind": "brand",
+      "shape": "wide",
+      "scale": 0.9
+    },
+    {
+      "name": "Hitachi",
+      "logo": "/images/brands/hitachi.svg",
+      "kind": "brand",
+      "shape": "wide",
+      "scale": 0.78
+    },
+    {
+      "name": "Google",
+      "logo": "/images/brands/google.svg",
+      "kind": "brand",
+      "shape": "wide",
+      "scale": 1.1
+    },
+    {
+      "name": "Salesforce",
+      "logo": "/images/brands/salesforce.svg",
+      "kind": "brand",
+      "logo_mono": "/images/brands/salesforce-mono.png",
+      "shape": "tall"
+    },
+    {
+      "name": "Deloitte",
+      "logo": "/images/brands/deloitte.svg",
+      "kind": "brand",
+      "shape": "wide",
+      "scale": 0.85
+    },
+    {
+      "name": "Carriageworks",
+      "logo": "/images/brands/carriageworks.svg",
+      "kind": "venue",
+      "shape": "wide",
+      "scale": 0.8
+    },
+    {
+      "name": "Doltone House",
+      "logo": "/images/brands/doltone-house.svg",
+      "kind": "venue",
+      "shape": "tall"
+    },
+    {
+      "name": "Navarra Venues",
+      "logo": "/images/brands/navarra-venues.svg",
+      "kind": "venue",
+      "shape": "tall"
+    },
+    {
+      "name": "Royal Randwick",
+      "logo": "/images/brands/royal-randwick.svg",
+      "kind": "venue",
+      "shape": "tall"
+    },
+    {
+      "name": "Pendolino",
+      "logo": "/images/brands/pendolino.png",
+      "kind": "venue",
+      "logo_mono": "/images/brands/pendolino-mono.png",
+      "shape": "tall"
+    },
+    {
+      "name": "The Lakes Golf Club",
+      "logo": "/images/brands/the-lakes-golf-club.jpg",
+      "kind": "venue",
+      "logo_mono": "/images/brands/the-lakes-golf-club-mono.png",
+      "shape": "tall"
+    }
   ],
   "service_area": "Sydney metro and surrounds",
   "reviews": [],
@@ -142,5 +298,16 @@
     "Zest",
     "Vivid Sydney (silhouette only — needs full mark)",
     "Extraordinary Events (need higher-res asset)"
-  ]
+  ],
+  "packages_included": [
+    "Two gelato chefs",
+    "The bar and all equipment",
+    "Set-up and pack-down"
+  ],
+  "gallery": [],
+  "intro": {
+    "heading": "We bring the bar. Your guests watch dessert being made.",
+    "body": "Celsius makes gelato with liquid nitrogen. Two of our chefs set up at your venue and freeze each batch live, in a cloud of fog.",
+    "events": "We cater corporate events and brand activations, product launches, gala dinners, weddings, private parties, festivals and premieres across Sydney."
+  }
 }

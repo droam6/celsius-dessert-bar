@@ -117,3 +117,14 @@ Two-page site (/ + /menu), light editorial palette with dark cinematic heroes. H
 - iOS Safari device test on the PhoneShowcase YouTube embed
 - Client content: real menu (current flavour copy is placeholder), photography, testimonials, 16 missing brand logos, webhook URL, square favicon
 - Client review session
+
+## Rework — de-vibecoding pass (8 Oct 2026, branch `rework`)
+- Trigger: Jack said the site looked AI-generated. Screenshot review found the template skeleton (label above every heading, pricing cards + badge, marquee, phone frame, cream/serif/gold, mood copy).
+- Rebuilt every section and /menu (see CLAUDE.md "Design System" and decisions D23–D26). Favicons and share image replaced (were Bosland leftovers / the raw logo).
+- Checked: build clean, eslint clean, no sideways scroll 320–1920, tap targets 44px+, one h1 and ordered headings, package preselect, empty form blocked, reduced-motion fallback, mobile menu + Escape.
+- Not verified here: the YouTube film and the smoke video playing (the cloud workspace cannot reach YouTube or decode H.264). Check both in a real browser.
+- Independent design review run before hand-off; its findings were applied except the two that need assets: real photos, and the original film footage for the hero.
+
+## Next
+- Jack: review `rework` in the browser, then photos (faces cropped or blurred before commit), then SEO, Google Business Profile, summer offer wording
+- Launch blockers unchanged: form endpoint, real menu, hosting + DNS at OnlyDomains, ABN, privacy policy, terms

@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
-import { DM_Serif_Display, DM_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const dmSerif = DM_Serif_Display({
-  variable: "--font-dm-serif",
-  subsets: ["latin"],
-  weight: "400",
+// Self-hosted (SIL Open Font Licence, see src/fonts). No third-party font request.
+const bodoni = localFont({
+  src: [
+    { path: "../fonts/bodoni-moda-latin-opsz-normal.woff2", style: "normal", weight: "400 900" },
+    { path: "../fonts/bodoni-moda-latin-opsz-italic.woff2", style: "italic", weight: "400 900" },
+  ],
+  variable: "--font-bodoni",
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
-  weight: ["400", "500"],
+const hanken = localFont({
+  src: "../fonts/hanken-grotesk-latin-wght-normal.woff2",
+  weight: "100 900",
+  variable: "--font-hanken",
   display: "swap",
 });
 
@@ -21,7 +24,7 @@ const siteUrl = "https://www.celsiusdessertbar.com.au";
 export const metadata: Metadata = {
   title: "Celsius Dessert Bar | Live Liquid Nitrogen Gelato Sydney",
   description:
-    "Sydney's premier liquid nitrogen gelato experience. Live theatre dessert catering for weddings, corporate events, and private parties. Crafted fresh at -196°C.",
+    "Liquid nitrogen gelato, frozen live at your event at \u2212196\u00b0C. Dessert catering for corporate events, brand launches and weddings across Sydney.",
   keywords: [
     "liquid nitrogen gelato Sydney",
     "dessert catering Sydney",
@@ -41,14 +44,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Celsius Dessert Bar | Live Liquid Nitrogen Gelato Sydney",
     description:
-      "Sydney's premier liquid nitrogen gelato experience. Live theatre dessert catering for weddings, corporate events, and private parties.",
+      "Liquid nitrogen gelato, frozen live at your event. Dessert catering for corporate events, brand launches and weddings across Sydney.",
     type: "website",
     locale: "en_AU",
     url: siteUrl,
     siteName: "Celsius Dessert Bar",
     images: [
       {
-        url: `${siteUrl}/images/celsius-logo.png`,
+        url: `${siteUrl}/images/og-default.jpg`,
         width: 1200,
         height: 630,
         alt: "Celsius Dessert Bar — Live Liquid Nitrogen Gelato Sydney",
@@ -59,8 +62,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Celsius Dessert Bar | Live Liquid Nitrogen Gelato Sydney",
     description:
-      "Sydney's premier liquid nitrogen gelato experience. Live theatre dessert catering for weddings, corporate events, and private parties.",
-    images: [`${siteUrl}/images/celsius-logo.png`],
+      "Liquid nitrogen gelato, frozen live at your event. Dessert catering for corporate events, brand launches and weddings across Sydney.",
+    images: [`${siteUrl}/images/og-default.jpg`],
   },
   icons: {
     icon: [
@@ -85,9 +88,9 @@ const jsonLd = {
   legalName: "Celsius Dessert Bar",
   url: siteUrl,
   logo: `${siteUrl}/images/celsius-logo.png`,
-  image: `${siteUrl}/images/celsius-logo.png`,
+  image: `${siteUrl}/images/og-default.jpg`,
   description:
-    "Sydney's premier liquid nitrogen gelato experience — live dessert catering for weddings, corporate events, brand activations, and private celebrations.",
+    "Liquid nitrogen gelato, frozen live at events across Sydney. Dessert catering for corporate events, brand activations, launches and weddings.",
   telephone: "+61 451 073 136",
   address: {
     "@type": "PostalAddress",
@@ -144,15 +147,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en-AU" className={`${bodoni.variable} ${hanken.variable}`} suppressHydrationWarning>
       <head>
+        {/* Marks that script is running, so scroll entrances only hide content when they can also show it. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.dataset.js='1'" }} />
         {/* AWAITING_GTM_ID — Google Tag Manager snippet goes here */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${dmSerif.variable} ${dmSans.variable}`}>
+      <body>
         {/* AWAITING_GTM_ID — Google Tag Manager noscript goes here */}
         {children}
       </body>

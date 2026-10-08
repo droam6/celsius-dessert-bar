@@ -24,76 +24,80 @@ Sydney metro and surrounds. Catering travels — venues we've serviced include D
 - Wedding desserts, corporate brand activations, product launches, gala dinners, private parties, festivals, film/TV premieres
 
 ## Brand Personality
-Theatrical but refined. Indulgent without being chaotic. Champagne-gold + teal on charcoal — premium, not loud. The hook is the **show**: dessert plated live with liquid nitrogen at -196°C in front of guests. Not "ice cream catering" — a dessert moment.
+Luxury, sleek, high-end corporate. The hook is the **show**: gelato frozen live with liquid nitrogen at −196°C in front of guests. Jack's standing brief (8 Oct 2026): keep the luxury mood, but the site must not look AI-generated ("vibecoded").
 
 ## Tech Stack
 - **Next.js 16.1.6** (App Router, static export — `output: "export"` in next.config.ts)
 - **React 19.2.3** + TypeScript 5
-- **Tailwind CSS v4** with custom palette tokens via `@theme inline` in `globals.css`
-- **Framer Motion 12** for subtle scroll-triggered fades and parallax
-- No backend — fully static. Form posts to `business.webhook_url` (n8n endpoint, currently null until client provides)
-- **Dev port: 3001** (so it doesn't collide with the NSP project on 3000)
+- **Tailwind CSS v4** with tokens via `@theme inline` in `globals.css`
+- Fonts are self-hosted through `next/font/local` from `src/fonts/` (SIL OFL). No Google Fonts request, and the build works offline.
+- No backend — fully static. Form posts to `business.webhook_url`; while that is null it opens the visitor's email app with the enquiry filled in (never drops an enquiry silently).
+- **Dev port: 3001**
 
-## Design System
+## Design System ("rework", 8 Oct 2026 — replaces the cream/serif/gold build)
 
-### Anti-Vibecode Rules
-- NO gradient text unless it's a deliberate brand accent
-- NO generic dessert-stock-photo aesthetics
-- NO perfectly symmetrical card grids — vary card heights, alternating layouts preferred
-- NO oversized rounded corners (max 12-16px on cards, 32px on phone bezel)
-- NO blue/purple gradients
-- NO excessive drop shadows — subtle elevation only
-- NO more than 2 visible font weights at a time
+### What was removed, and must not come back
+The previous build read as an AI template. These are the tells that were cut:
+- A small tracked uppercase label above every heading
+- Cream + DM Serif + gold
+- Three pricing cards with a "Most popular" badge and tick lists
+- Centred "Trusted by" scrolling logo strip
+- Phone-frame mockup around the video
+- Fade-up on every element
+- Mood copy ("Theatre, served cold", "Choose your moment", "The final flourish")
+- One coloured accent word in each heading
+- Invented provenance in menu copy ("Madagascan", "24-karat", "Murray River")
 
-### Palette (CSS custom properties — see `src/app/globals.css`)
-
-| Token | Value | Usage |
+### Palette (`src/app/globals.css`)
+| Token | Value | Use |
 |---|---|---|
-| `--color-charcoal` | `#0E0E10` | Primary background (body, hero, packages, contact) |
-| `--color-charcoal-light` | `#1A1A1D` | Elevated surfaces (cards, brand strip) |
-| `--color-charcoal-dark` | `#050507` | Deepest panels (footer) |
-| `--color-teal` | `#5DBFB8` | Logo-matching accent — H1 highlights, check icons, ambient glows |
-| `--color-teal-deep` | `#2F8F89` | Hover/active teal |
-| `--color-gold` | `#C9A86A` | Champagne gold — CTAs, eyebrows, dividers |
-| `--color-gold-light` | `#E2C58B` | Hover/CTA highlight |
-| `--color-cream` | `#F5F1E8` | Off-white text on dark |
-| `--color-warm-white` | `#FBF8F0` | Light pill backgrounds (brand marquee tiles) |
-| `--color-border` | `rgba(201,168,106,0.18)` | Subtle gold dividers |
+| `--color-ink` | `#000000` | Page black. Matches the black of the hero film exactly, so the hero has no visible edge. |
+| `--color-ink-soft` | `#121212` | Video frame while loading |
+| `--color-bone` | `#F1EDE4` | Text on black, primary button |
+| `--color-paper` | `#ECE6DA` | The one light surface: packages section and the menu page (set like a printed card) |
+| `--color-champagne` | `#C9AE84` | Metal accent on black: focus ring, announcement line. Used rarely. |
+| `--color-bronze` | `#6E5837` | Same metal, dark enough for text on paper |
+
+Mint and salmon live in the original logo only. On black the site uses `celsius-logo-mono.png` (one-colour wordmark made from the client's logo; needs client sign-off).
 
 ### Typography
-- **Headings:** DM Serif Display (Google Fonts via `next/font`)
-- **Body:** DM Sans (Google Fonts via `next/font`)
-- Font scale via `clamp()` for fluid sizing
-- Generous line-height (1.6–1.8 on body)
+- **Display:** Bodoni Moda (variable, optical size axis). Class `.display`. Big and sparing.
+- **Small display** (`.display-sm`): same face at a low optical size and weight 500. Use below about 40px, or hyphens, plus signs and hairlines vanish.
+- **Body and UI:** Hanken Grotesk.
+- `.label` (small tracked caps) is only for form labels and the menu course names. Never above a heading.
+- Italic is used in two places only: the temperature in the hero and the package names.
+- Sentence case everywhere, including buttons.
 
-### Layout Principles
-- Asymmetric over centred grids
-- Generous whitespace
-- Section padding varies — not identical on every section
-- Max content width 1280px
-- Mobile-first responsive (Tailwind breakpoints)
+### Layout
+- Max width 1360px. Black sections run into each other; hairlines (`border-bone/15–25`) separate, not boxes.
+- No cards, no shadows, no rounded corners, no gradients except the hero scrim.
+- Buttons are flat bone rectangles (`.btn`); secondary actions are underlined text (`.link`).
+- Form fields are a label and a bottom line (`.field`).
+- Client logos: static grid, one colour (`.logo-mono`, CSS filter; three marks have pre-made `-mono.png` files). `shape` and `scale` in `brand_partners[]` balance their optical weight.
 
 ### Motion
-- Framer Motion `<FadeIn>` wrapper for scroll-triggered fades (0.4–0.7s)
-- Hero: subtle parallax + ambient blur orbs
-- Brand marquee: CSS `@keyframes brand-marquee` translateX -50%, 40s desktop / 25s mobile, paused on hover
-- Hover: tile scale 1.04, gold glow ring; CTA colour swap
+- Hero headline rises out of a clipped line (CSS keyframes, no script).
+- `<FadeIn>` (IntersectionObserver + CSS, no Framer Motion) once per block, 0.9s. Content is only hidden when `html[data-js]` is set and the visitor has not asked for reduced motion.
+- `prefers-reduced-motion`: hero video hidden, poster shown, no entrances. (Jack's Windows PC had "Show animations" off; that was the old "frozen hero" bug.)
 
 ## Page Structure
 
-Two routes: `/` (single-page scroll, below) and `/menu` (flavour menu — dark smoke-poster hero band, Signature / Seasonal / Toppings editorial lists, CTA band → `/#contact`).
+Two routes: `/` and `/menu`.
 
-### Homepage sections
-
-| # | Section | Component | Purpose |
+| # | Section | Component | Notes |
 |---|---|---|---|
-| 1 | Navigation | `Navigation.tsx` | Fixed top, transparent → charcoal/95 on scroll |
-| 2 | Hero | `Hero.tsx` | Headline + landscape phone mockup with YouTube embed (autoplay+mute+loop) |
-| 3 | About | `About.tsx` | "Theatre, served cold" — story copy + temp visual placeholder |
-| 4 | Brand Marquee | `BrandMarquee.tsx` | Auto-scroll strip of partner logos on light pills |
-| 5 | Packages | `Packages.tsx` | 3-card tier display (Classic / Signature / Premium), Signature is "Most popular" |
-| 6 | Contact | `Contact.tsx` | Enquiry form (Name, Email, Phone, Event Type, Package, Message) + kiosk info + Google Maps |
-| 7 | Footer | `Footer.tsx` | 4-column dark footer + Instagram |
+| 1 | Navigation | `Navigation.tsx` | Clear over the hero, black once scrolled. Packages · Clients · Menu · Enquire |
+| 2 | Hero | `Hero.tsx` | Smoke film, headline at the bottom on a black scrim. Optional `business.announcement` line (null = hidden) |
+| 3 | Film | `Film.tsx` | The real event film (YouTube), full width, no device frame. Caption from `business.film_caption` |
+| 4 | Intro | `Intro.tsx` | One statement + two short paragraphs from `intro` |
+| 5 | Clients | `Clients.tsx` | Static one-colour logo grid |
+| 6 | Packages | `Packages.tsx` | One row per package on paper. No prices. Each "Enquire" preselects the package in the form |
+| 7 | Contact | `Contact.tsx` | Form (adds event date + guests) and plain contact details |
+| 8 | Footer | `Footer.tsx` | Minimal |
+
+`/menu` is set on paper like a printed menu: names only, three courses. It shows "Sample menu." while `menu.note` is non-empty.
+
+Photography slots are not built yet: they are designed once the real event photos are in hand (see Pending).
 
 ## Data Layer — `data/agency.json`
 
@@ -101,11 +105,12 @@ Single JSON file feeds every component. Schema overview:
 
 | Top-level key | Shape | Used by |
 |---|---|---|
-| `business` | object — name, legal_name, tagline, brand_tagline, about_text, address, phone, email, website, youtube_hero_url, google_maps_url, social, hours, webhook_url | Hero, About, Contact, Footer, Navigation |
+| `business` | object — name, legal_name, tagline, address, phone, email, website, youtube_hero_url, film_caption, announcement, google_maps_url, social, hours, webhook_url | Hero, Film, Contact, Footer |
+| `intro` | heading, body, events | Intro |
 | `event_types` | string[] (8 entries) | Contact form select, Footer |
-| `packages` | array of {name, tier, guest_capacity, highlights[]} (3 entries — no prices) | Packages section, Contact form select |
+| `packages` | array of {name, guests, flavours, service, …} (3 entries — no prices) + `packages_included[]` | Packages section, Contact form select |
 | `menu` | object — note + signature[8]/seasonal[4]/toppings[8] ({name, description}) + rotation_note + custom_flavour_note | /menu page; Packages footnote (custom_flavour_note) |
-| `brand_partners` | array of {name, logo} (14 entries) | BrandMarquee |
+| `brand_partners` | array of {name, logo, logo_mono?, kind, shape, scale?} (14 entries) | Clients |
 | `service_area` | string | (not currently rendered) |
 | `reviews` | empty array — placeholder until real reviews land | (Testimonials.tsx is dormant) |
 | `_pending_brand_logos` | string[] — 16 brands awaiting client press kit | reference only |
@@ -115,26 +120,27 @@ Single JSON file feeds every component. Schema overview:
 2. **No fake reviews ever.** `reviews[]` stays empty until client supplies real testimonials with attribution.
 3. **Brand marquee shows real partners only.** No filler logos. Missing logos go in `_pending_brand_logos[]` until client supplies.
 4. **All CTAs route to enquiry form** (`#contact`). Hero, package cards, navigation, mobile menu — all converge on the same form.
-5. **Form submission only fires when `webhook_url` is non-null.** Form silently no-ops in dev until n8n endpoint is live.
+5. **The form never drops an enquiry.** With `webhook_url` null it opens the visitor's email app with the enquiry filled in and says so. Webmail users may see nothing, so a real endpoint is a launch blocker.
+6. **No invented facts.** No response-time promises, no "most popular", no provenance claims, no offers the client has not confirmed. `business.announcement` stays null until Jack supplies real wording.
+7. **Faces.** The repo is public. Event photos with recognisable faces are never committed; crop faces out, or blur small background ones, before anything is added.
 
 ## File Structure
 ```
 /data/agency.json         — single source of truth for all content
 /src/app/
-  layout.tsx              — metadata, fonts, JSON-LD (FoodEstablishment + CateringService)
+  layout.tsx              — metadata, self-hosted fonts, JSON-LD
   page.tsx                — composes the section order
-  menu/page.tsx           — /menu route (flavour lists from data/agency.json menu.*)
-  globals.css             — Tailwind + Celsius palette tokens + marquee CSS
+  menu/page.tsx           — /menu route
+  globals.css             — Tailwind + tokens + the few hand-written classes
 /src/components/
-  Navigation.tsx, Hero.tsx, About.tsx, BrandMarquee.tsx,
-  Packages.tsx, Contact.tsx, Footer.tsx, FadeIn.tsx
+  Navigation, Hero, Film, Intro, Clients, Packages, Contact, Footer, FadeIn
   Testimonials.tsx        — DORMANT (// @ts-nocheck), awaiting real reviews
+/src/fonts/               — Bodoni Moda + Hanken Grotesk woff2, OFL licences
 /public/images/
-  celsius-logo.png        — primary brand mark (1820×841)
-  brands/                 — 14 partner logos (mixed SVG/PNG/JPG)
-/assets/
-  celsius-source/         — original scraped logo + favicon
-  brand-logos/            — pre-publish drop zone
+  celsius-logo.png        — client's colour logo
+  celsius-logo-mono.png   — one-colour wordmark for black surfaces
+  og-default.jpg          — 1200×630 share image
+  brands/                 — 14 partner logos (+ three -mono.png)
 ```
 
 ## Dev Commands
@@ -148,10 +154,13 @@ npm run lint
 ## Pending Items (mirroring Round 3+4)
 - [ ] Real testimonials (3 minimum)
 - [ ] 16 missing brand partner logos — see `_pending_brand_logos[]`
-- [ ] Square favicon variants (current `public/favicon.ico` is Bosland's)
-- [ ] Hero / event photography pack (About visual is a TEMP placeholder)
-- [ ] Real menu — `menu.signature_flavours[]` is placeholder content
-- [ ] n8n webhook URL → `business.webhook_url`
+- [x] Favicons replaced (the "C" from the wordmark on black)
+- [ ] Event photography: Jack has a USB of event photos. Faces must be cropped out or blurred before commit. Photo sections get designed around the real shots.
+- [ ] Original footage of the Lancôme film, to cut a self-hosted hero and drop the stock smoke
+- [ ] Client sign-off on the one-colour wordmark
+- [ ] SEO pass, Google Business Profile, summer offer wording (Jack, 8 Oct)
+- [ ] Real menu — `menu.*` is placeholder content (page shows "Sample menu.")
+- [ ] Form endpoint → `business.webhook_url` (launch blocker)
 - [ ] iOS Safari YouTube autoplay-mute device test
 - [ ] Final domain DNS + hosting decision
 - [ ] Legal copy: ABN, privacy policy URL, T&Cs
@@ -164,4 +173,5 @@ npm run lint
 ## Git
 - Repo: `https://github.com/droam6/celsius-dessert-bar` (public)
 - Always `git push` at end of each session
+- The redesign lives on branch `rework`. Do not merge to `main` until Jack approves it.
 - Jack switches between Mac and Windows PC

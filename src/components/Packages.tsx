@@ -7,133 +7,55 @@ export const PACKAGE_SELECT_EVENT = 'celsius:package-selected';
 
 function selectPackage(name: string) {
   if (typeof window === 'undefined') return;
-  window.dispatchEvent(
-    new CustomEvent(PACKAGE_SELECT_EVENT, { detail: { name } })
-  );
-  const target = document.getElementById('contact');
-  if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  window.dispatchEvent(new CustomEvent(PACKAGE_SELECT_EVENT, { detail: { name } }));
+  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function CheckIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 13l4 4L19 7" />
-    </svg>
-  );
-}
-
+/* Set like a list on a printed card: one row per package, hairlines, no boxes, no prices (standing rule). */
 export default function Packages() {
   const packages = agencyData.packages;
+  const included = agencyData.packages_included;
 
   return (
-    <section
-      id="packages"
-      className="bg-[#F0EBDD] py-20 lg:py-32"
-    >
-      <div className="mx-auto max-w-[1280px] px-6 lg:px-10">
-        <FadeIn>
-          <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-gold">
-            Event Packages
-          </p>
-          <h2 className="mt-4 max-w-2xl font-heading text-[clamp(2rem,3.5vw,3rem)] leading-[1.15] text-cream">
-            Choose your moment
+    <section id="packages" className="on-paper bg-paper py-24 text-ink lg:py-36">
+      <div className="mx-auto max-w-[1360px] px-6 lg:px-12">
+        <FadeIn className="grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:gap-24">
+          <h2 className="display text-[clamp(2.5rem,5.4vw,4.75rem)]">
+            Three packages, by guest count
           </h2>
-          <p className="mt-5 max-w-2xl text-[15px] leading-[1.75] text-cream/60">
-            Three tiers built for the size and feel of your event. Pricing is tailored
-            to your venue, guest count, and brand experience — enquire for a quote.
+          <p className="max-w-[30rem] leading-[1.65] text-ink/75 lg:pt-4">
+            Each one includes {included[0].toLowerCase()}, {included[1].toLowerCase()}, and{' '}
+            {included[2].toLowerCase()}. Pricing depends on your date, venue and guest count,
+            so we quote each event.
           </p>
         </FadeIn>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-3 lg:mt-20 lg:gap-7">
-          {packages.map((pkg, i) => {
-            const isFeatured = i === 1; // Signature
-            return (
-              <FadeIn key={pkg.name} delay={0.1 + i * 0.08}>
-                <div
-                  className={`package-card group relative flex h-full flex-col border bg-[#FFFFFF] p-7 transition-all duration-500 lg:p-8 ${
-                    isFeatured
-                      ? 'package-card--featured border-gold/40 lg:-translate-y-3'
-                      : 'border-[var(--color-border)] hover:-translate-y-1.5 hover:border-gold'
-                  }`}
+        <FadeIn delay={0.1}>
+          <ul className="mt-14 border-t border-ink lg:mt-24">
+            {packages.map((p) => (
+              <li
+                key={p.name}
+                className="grid gap-x-10 gap-y-2 border-b border-ink/25 py-8 md:grid-cols-[1.1fr_1fr_1.6fr_auto] md:items-baseline lg:py-10"
+              >
+                <h3 className="display text-[2.5rem] italic lg:text-[3.25rem]">{p.name}</h3>
+                <p className="display-sm text-[1.5rem] lg:text-[1.75rem]">{p.guests} guests</p>
+                <p className="leading-[1.55] text-ink/80">
+                  {p.flavours}
+                  <br />
+                  {p.service}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => selectPackage(p.name)}
+                  aria-label={`Enquire about the ${p.name} package`}
+                  className="link mt-2 flex min-h-12 cursor-pointer items-center justify-self-start text-[0.9375rem] font-medium md:mt-0"
                 >
-                  {/* Most popular ribbon — solid gold pill, cream text */}
-                  {isFeatured && (
-                    <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
-                      <span className="block bg-gold px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-[#FBF8F0]">
-                        Most popular
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Tier badge top-right — outlined deeper-gold pill on white */}
-                  <span className="absolute right-6 top-6 flex h-7 w-7 items-center justify-center rounded-full border border-gold bg-[#FFFFFF] text-[11px] font-medium text-gold">
-                    {pkg.tier}
-                  </span>
-
-                  {/* Name */}
-                  <h3 className="font-heading text-2xl text-cream lg:text-3xl">
-                    {pkg.name}
-                  </h3>
-
-                  {/* Capacity */}
-                  <p className="mt-2 text-[13px] uppercase tracking-[0.15em] text-cream/65">
-                    {pkg.guest_capacity}
-                  </p>
-
-                  {/* Divider */}
-                  <div
-                    className="my-7 h-[1px] w-full"
-                    style={{ background: 'var(--color-border)' }}
-                  />
-
-                  {/* Highlights */}
-                  <ul className="space-y-3.5">
-                    {pkg.highlights.map((line) => (
-                      <li
-                        key={line}
-                        className="flex items-start gap-3 text-[14px] leading-[1.6] text-cream/80"
-                      >
-                        <CheckIcon className="mt-[3px] h-4 w-4 shrink-0 text-teal" />
-                        <span>{line}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* CTA */}
-                  <div className="mt-8 flex-1" />
-                  <button
-                    type="button"
-                    onClick={() => selectPackage(pkg.name)}
-                    className={`mt-6 inline-flex items-center justify-center px-6 py-3 text-[12px] font-medium uppercase tracking-[0.18em] transition-all duration-300 ${
-                      isFeatured
-                        ? 'bg-gold text-[#FBF8F0] hover:bg-gold-dark'
-                        : 'border border-gold text-gold hover:bg-gold hover:text-[#FBF8F0]'
-                    }`}
-                  >
-                    Enquire about {pkg.name}
-                  </button>
-                </div>
-              </FadeIn>
-            );
-          })}
-        </div>
-
-        {/* Custom-flavour note */}
-        {agencyData.menu?.custom_flavour_note && (
-          <FadeIn delay={0.5}>
-            <p className="mt-12 text-center text-[13px] text-cream/55 lg:mt-16">
-              {agencyData.menu.custom_flavour_note}
-            </p>
-          </FadeIn>
-        )}
+                  Enquire
+                </button>
+              </li>
+            ))}
+          </ul>
+        </FadeIn>
       </div>
     </section>
   );
