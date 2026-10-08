@@ -89,15 +89,21 @@ Two routes: `/` and `/menu`.
 | 1 | Navigation | `Navigation.tsx` | Clear over the hero, black once scrolled. Packages · Clients · Menu · Enquire |
 | 2 | Hero | `Hero.tsx` | Smoke film, headline at the bottom on a black scrim. Optional `business.announcement` line (null = hidden) |
 | 3 | Film | `Film.tsx` | The real event film (YouTube), full width, no device frame. Player mounts only when scrolled into view. Caption from `business.film_caption` |
-| 4 | Intro | `Intro.tsx` | One statement + two short paragraphs from `intro` |
+| 4 | Intro | `Intro.tsx` | One statement + two short paragraphs from `intro`, then the three-photo sequence (pour, churn, serve). Numbered because it is a real sequence |
 | 5 | Clients | `Clients.tsx` | Static one-colour logo grid |
+| 5b | Events | `Events.tsx` | Four event photos in two flush rows. In each row one photo keeps its shape, the other is cropped to match |
 | 6 | Packages | `Packages.tsx` | One row per package on paper. No prices. Each "Enquire" preselects the package in the form |
 | 7 | Contact | `Contact.tsx` | Form (adds event date + guests) and plain contact details |
 | 8 | Footer | `Footer.tsx` | Minimal |
 
 `/menu` is set on paper like a printed menu: names only, three courses. It shows "Sample menu." while `menu.note` is non-empty.
 
-Photography slots are not built yet: they are designed once the real event photos are in hand (see Pending).
+### Photographs
+- Real event photos only, from the client's USB (rescued 8 Oct 2026 to `Desktop/celsius-photos` on Jack's PC; the originals are **not** in this repo).
+- `node tools/photos.mjs <folder of picked originals>` crops, resizes and writes `public/images/photos/*.webp` plus `data/photos.json`. Crop boxes and alt text live in that script. `<Photo id sizes>` renders them with width, height and srcset.
+- Every crop in the script was chosen so no recognisable face is left in frame. Keep it that way (rule 7).
+- Not used, on purpose: the Stormtrooper shots (third-party characters), anything with children or guests' faces, the insurance and food-safety documents, the newspaper page.
+- Small originals (under about 1300px) only go in half-width slots.
 
 ## Data Layer — `data/agency.json`
 
@@ -134,14 +140,16 @@ Single JSON file feeds every component. Schema overview:
   menu/page.tsx           — /menu route
   globals.css             — Tailwind + tokens + the few hand-written classes
 /src/components/
-  Navigation, Hero, Film, Intro, Clients, Packages, Contact, Footer, FadeIn
+  Navigation, Hero, Film, Intro, Clients, Events, Packages, Contact, Footer, FadeIn, Photo
   Testimonials.tsx        — DORMANT (// @ts-nocheck), awaiting real reviews
 /src/fonts/               — Bodoni Moda + Hanken Grotesk woff2, OFL licences
+/tools/photos.mjs         — event photo crops and web sizes (originals stay off the repo)
 /public/images/
   celsius-logo.png        — client's colour logo
   celsius-logo-mono.png   — one-colour wordmark for black surfaces
   og-default.jpg          — 1200×630 share image
   brands/                 — 14 partner logos (+ three -mono.png)
+  photos/                 — processed event photos (webp), listed in data/photos.json
 ```
 
 ## Dev Commands
@@ -156,8 +164,9 @@ npm run lint
 - [ ] Real testimonials (3 minimum)
 - [ ] 16 missing brand partner logos — see `_pending_brand_logos[]`
 - [x] Favicons replaced (the "C" from the wordmark on black)
-- [ ] Event photography: Jack has a USB of event photos. Faces must be cropped out or blurred before commit. Photo sections get designed around the real shots.
-- [ ] Original footage of the Lancôme film, to cut a self-hosted hero and drop the stock smoke
+- [x] Event photography: eight shots from the client's USB are in (see Photographs). More can be added through tools/photos.mjs.
+- [ ] Client OK for the photos in use, and whether staff are happy to be shown (a strong two-chef stage shot is held back because faces are clear)
+- [ ] Better source footage for the hero: the USB copy of the Lancôme film is only 640×360, so the stock smoke stays for now
 - [ ] Client sign-off on the one-colour wordmark
 - [ ] SEO pass, Google Business Profile, summer offer wording (Jack, 8 Oct)
 - [ ] Real menu — `menu.*` is placeholder content (page shows "Sample menu.")

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { Photo } from '@/components/Photo';
 import agencyData from '@data/agency.json';
 
 const siteUrl = 'https://www.celsiusdessertbar.com.au';
@@ -83,7 +84,9 @@ export default function MenuPage() {
           />
           <Course id="toppings" title="Toppings" items={menu.toppings} />
 
-          <div className="mt-6 flex flex-col gap-8 border-t border-ink pt-12 lg:mt-10 lg:flex-row lg:items-end lg:justify-between lg:pt-16">
+          <Photo id="kiosk" sizes="(min-width: 1360px) 1264px, 100vw" className="mt-4 h-auto w-full object-cover lg:mt-8 lg:aspect-[2.1/1]" />
+
+          <div className="mt-14 flex flex-col gap-8 border-t border-ink pt-12 lg:mt-24 lg:flex-row lg:items-end lg:justify-between lg:pt-16">
             <p className="display max-w-[40rem] text-[clamp(2rem,4vw,3.25rem)] leading-[1.1]">
               Want the bar at your event?
             </p>

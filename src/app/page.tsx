@@ -3,6 +3,7 @@ import Hero from '@/components/Hero';
 import Intro from '@/components/Intro';
 import Film from '@/components/Film';
 import Clients from '@/components/Clients';
+import Events from '@/components/Events';
 import Packages from '@/components/Packages';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
@@ -22,6 +23,7 @@ export default function Home() {
         <Film />
         <Intro />
         <Clients />
+        <Events />
         <Packages />
         <Contact />
       </main>

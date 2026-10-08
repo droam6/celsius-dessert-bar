@@ -1,0 +1,166 @@
+{
+  "pour": {
+    "width": 1317,
+    "height": 1069,
+    "alt": "A gloved hand pours liquid nitrogen from a steel jug into a mixer bowl, fog spilling over the rim, beside a vase of roses",
+    "srcset": [
+      {
+        "w": 480,
+        "src": "/images/photos/pour-480.webp"
+      },
+      {
+        "w": 960,
+        "src": "/images/photos/pour-960.webp"
+      },
+      {
+        "w": 1317,
+        "src": "/images/photos/pour-1317.webp"
+      }
+    ]
+  },
+  "churn": {
+    "width": 2576,
+    "height": 1718,
+    "alt": "Gelato thickening in a steel mixer bowl as the paddle turns",
+    "srcset": [
+      {
+        "w": 480,
+        "src": "/images/photos/churn-480.webp"
+      },
+      {
+        "w": 960,
+        "src": "/images/photos/churn-960.webp"
+      },
+      {
+        "w": 1600,
+        "src": "/images/photos/churn-1600.webp"
+      },
+      {
+        "w": 2000,
+        "src": "/images/photos/churn-2000.webp"
+      }
+    ]
+  },
+  "cup": {
+    "width": 1682,
+    "height": 2318,
+    "alt": "A scoop of gelato in a Celsius cup, topped with crushed pistachio and rose petals",
+    "srcset": [
+      {
+        "w": 480,
+        "src": "/images/photos/cup-480.webp"
+      },
+      {
+        "w": 960,
+        "src": "/images/photos/cup-960.webp"
+      },
+      {
+        "w": 1600,
+        "src": "/images/photos/cup-1600.webp"
+      }
+    ]
+  },
+  "fog-table": {
+    "width": 1968,
+    "height": 1008,
+    "alt": "Three mixers on a linen-covered table at an evening event, nitrogen fog rolling across the table and over its edge",
+    "srcset": [
+      {
+        "w": 480,
+        "src": "/images/photos/fog-table-480.webp"
+      },
+      {
+        "w": 960,
+        "src": "/images/photos/fog-table-960.webp"
+      },
+      {
+        "w": 1600,
+        "src": "/images/photos/fog-table-1600.webp"
+      },
+      {
+        "w": 1968,
+        "src": "/images/photos/fog-table-1968.webp"
+      }
+    ]
+  },
+  "fog-plinth": {
+    "width": 1054,
+    "height": 1259,
+    "alt": "Nitrogen fog pouring off a round table around a mixer at an indoor event",
+    "srcset": [
+      {
+        "w": 480,
+        "src": "/images/photos/fog-plinth-480.webp"
+      },
+      {
+        "w": 960,
+        "src": "/images/photos/fog-plinth-960.webp"
+      }
+    ]
+  },
+  "harbour": {
+    "width": 1284,
+    "height": 933,
+    "alt": "The gelato bar set up on a terrace overlooking the Sydney Harbour Bridge and the Opera House",
+    "srcset": [
+      {
+        "w": 480,
+        "src": "/images/photos/harbour-480.webp"
+      },
+      {
+        "w": 960,
+        "src": "/images/photos/harbour-960.webp"
+      },
+      {
+        "w": 1284,
+        "src": "/images/photos/harbour-1284.webp"
+      }
+    ]
+  },
+  "mirror-ball": {
+    "width": 2400,
+    "height": 1512,
+    "alt": "Three mixers and flasks of gelato base on a black table, lit by a mirror ball",
+    "srcset": [
+      {
+        "w": 480,
+        "src": "/images/photos/mirror-ball-480.webp"
+      },
+      {
+        "w": 960,
+        "src": "/images/photos/mirror-ball-960.webp"
+      },
+      {
+        "w": 1600,
+        "src": "/images/photos/mirror-ball-1600.webp"
+      },
+      {
+        "w": 2000,
+        "src": "/images/photos/mirror-ball-2000.webp"
+      }
+    ]
+  },
+  "kiosk": {
+    "width": 2144,
+    "height": 1424,
+    "alt": "A row of white mixers with nitrogen fog spilling from the bowls",
+    "srcset": [
+      {
+        "w": 480,
+        "src": "/images/photos/kiosk-480.webp"
+      },
+      {
+        "w": 960,
+        "src": "/images/photos/kiosk-960.webp"
+      },
+      {
+        "w": 1600,
+        "src": "/images/photos/kiosk-1600.webp"
+      },
+      {
+        "w": 2000,
+        "src": "/images/photos/kiosk-2000.webp"
+      }
+    ]
+  }
+}

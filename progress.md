@@ -131,6 +131,10 @@ Two-page site (/ + /menu), light editorial palette with dark cinematic heroes. H
 - Not verified here: video playback (workspace browser has no H.264) and that phones pick the 720p file. Check in a real browser.
 - Jack is running a Claude Code job on his PC to rescue the event photos from a part-corrupt USB stick into `Desktop/celsius-photos` (outside the repo). Contact sheets come back to the web chat for picking.
 
+## Rework — real photos (8 Oct 2026)
+- Photos rescued from the client's USB via a Claude Code job on Jack's PC; picked from contact sheets; eight processed with tools/photos.mjs and placed (intro sequence, events mosaic, menu page). See D30.
+- Lighthouse after photos (mobile, local): home 94 / 100 / 96 / 100, menu 100 / 100 / 100 / 100.
+
 ## Next
-- Jack: review `rework` in the browser, then photos (faces cropped or blurred before commit), then SEO, Google Business Profile, summer offer wording
+- Jack: review `rework` in the browser (faces cropped or blurred before commit), then SEO, Google Business Profile, summer offer wording
 - Launch blockers unchanged: form endpoint, real menu, hosting + DNS at OnlyDomains, ABN, privacy policy, terms
