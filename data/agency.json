@@ -188,7 +188,20 @@
   },
   "flavours": {
     "heading": "Some of what we freeze",
-    "items": []
+    "items": [
+      {
+        "photo": "scoop"
+      },
+      {
+        "photo": "cup"
+      },
+      {
+        "photo": "flasks"
+      },
+      {
+        "photo": "churn"
+      }
+    ]
   },
   "brand_partners": [
     {

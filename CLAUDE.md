@@ -103,7 +103,7 @@ Two routes: `/` and `/menu`.
 | 4 | Intro | `Intro.tsx` | One statement + two short paragraphs from `intro`, then the three-photo sequence (pour, churn, serve). Numbered because it is a real sequence |
 | 5 | Clients | `Clients.tsx` | Eight brand logos in one colour, then the venues as a list of names |
 | 5b | Events | `Events.tsx` | Four event photos in two flush rows. In each row one photo keeps its shape, the other is cropped to match. Under them: one line, an Enquire button and the Instagram link (the only call to action between the hero and the packages) |
-| 5c | Flavours | `Flavours.tsx` | Photo and name for each flavour in `flavours.items`. Hidden until at least three are supplied. Client photos and client names only |
+| 5c | Flavours | `Flavours.tsx` | One photo per tile from `flavours.items`, with the flavour name under it when the client has supplied one (never an invented name). Hidden under three photos. On since 11 Oct 2026 with four photos from the client's USB and no names: Jack is getting the names, and better photos from Instagram, from the client |
 | 6 | Packages | `Packages.tsx` | One row per package on a charcoal band (`bg-ink-soft`, the one step up from page black, used to break the long black run), names in metal. No prices. Each "Enquire" preselects the package in the form |
 | 7 | Contact | `Contact.tsx` | Form and plain contact details. Fields: name and email (needed), phone, company, event type (with "Other", which opens a free-text line), date, guests (plain text, because people write "150+"), venue or suburb, package, message. No entrance animation on the form. Opening hours print only when `business.hours_confirmed` is true |
 | 8 | Footer | `Footer.tsx` | Minimal |
@@ -129,7 +129,7 @@ Single JSON file feeds every component. Schema overview:
 | `event_types` | string[] (9 entries; the last is "Other") | Contact form select |
 | `packages` | array of {name, guests, flavours, service, …} (3 entries — no prices) + `packages_included[]` | Packages section, Contact form select |
 | `menu` | object — note + signature[8]/seasonal[4]/toppings[8] ({name, description}) + rotation_note + custom_flavour_note | /menu page |
-| `flavours` | heading + items[] of {name, photo (an id in data/photos.json), note?} | Flavours (hidden under three items) |
+| `flavours` | heading + items[] of {photo (an id in data/photos.json), name?, note?} | Flavours (hidden under three items) |
 | `brand_partners` | array of {name, logo, logo_mono?, kind (brand or venue), shape, scale?} (14 entries: 8 brands, 6 venues) | Clients |
 | `service_area` | string | (not currently rendered) |
 | `reviews` | empty array — placeholder until real reviews land | (Testimonials.tsx is dormant) |
@@ -188,7 +188,7 @@ npm run lint
 - [ ] Client OK for the photos in use, and whether staff are happy to be shown (a strong two-chef stage shot is held back because faces are clear)
 - [ ] Better source footage for the hero: the USB copy of the Lancôme film is only 640×360, so the stock smoke stays for now
 - [ ] Client pick of the metal finish (champagne silver is built; platinum and champagne were mocked)
-- [ ] Flavour photos and names from the client's Instagram (the Flavours section is built and waiting)
+- [ ] Flavour names for the four tiles, and more flavour photos from the client's Instagram (the section is on with USB photos and no names)
 - [ ] Opening hours confirmed by the client (hidden until then)
 - [ ] Root address to www redirect (Cloudflare redirect rule, Jack's dashboard)
 - [ ] Make the GitHub repo private (it holds internal notes)

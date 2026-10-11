@@ -3,15 +3,18 @@ import { FadeIn } from './FadeIn';
 import { Photo, type PhotoId } from './Photo';
 import agencyData from '@data/agency.json';
 
-type Flavour = { name: string; photo: PhotoId; note?: string };
+type Flavour = { photo: PhotoId; name?: string; note?: string };
 
-/* A few real flavours, each with its own photo, so a buyer can see what is served.
+/* Real gelato, one photo per tile, so a buyer can see what is served.
    Content comes from `flavours.items` in data/agency.json: the client's own photos
-   (processed by tools/photos.mjs) and the client's own flavour names. Nothing here is
-   invented, so the section stays off the page until at least three are supplied. */
+   (processed by tools/photos.mjs). A tile shows a name only when the client has supplied
+   one (`name`); names are never invented, so a tile without one is just the photo.
+   The section stays off the page until there are at least three photos. */
 export default function Flavours() {
   const { heading, items } = agencyData.flavours as { heading: string; items: Flavour[] };
   if (items.length < 3) return null;
+  // Tiles with captions need room under each row; bare photos sit as a tight grid.
+  const captioned = items.some((f) => f.name || f.note);
   const instagram = agencyData.business.social.instagram;
 
   return (
@@ -41,22 +44,26 @@ export default function Flavours() {
         <FadeIn delay={0.1}>
           {/* Four across when the count divides by four, otherwise three, so no row ends in a hole. */}
           <ul
-            className={`mt-10 grid grid-cols-2 gap-x-3 gap-y-10 lg:mt-14 lg:gap-x-5 ${
-              items.length % 4 === 0 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'
-            }`}
+            className={`mt-10 grid grid-cols-2 gap-x-3 lg:mt-14 lg:gap-x-5 ${
+              captioned ? 'gap-y-10' : 'gap-y-3 lg:gap-y-5'
+            } ${items.length % 4 === 0 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}
           >
             {items.map((f) => (
-              <li key={f.name}>
+              <li key={f.photo}>
                 <figure>
                   <Photo
                     id={f.photo}
                     sizes="(min-width: 1024px) 23vw, 48vw"
                     className="aspect-[4/5] h-auto w-full object-cover"
                   />
-                  <figcaption className="mt-3">
-                    <span className="display-sm block text-[1.25rem] text-bone lg:text-[1.375rem]">{f.name}</span>
-                    {f.note && <span className="mt-1 block text-[0.9375rem] text-bone/65">{f.note}</span>}
-                  </figcaption>
+                  {(f.name || f.note) && (
+                    <figcaption className="mt-3">
+                      {f.name && (
+                        <span className="display-sm block text-[1.25rem] text-bone lg:text-[1.375rem]">{f.name}</span>
+                      )}
+                      {f.note && <span className="mt-1 block text-[0.9375rem] text-bone/65">{f.note}</span>}
+                    </figcaption>
+                  )}
                 </figure>
               </li>
             ))}

@@ -162,5 +162,27 @@
         "src": "/images/photos/kiosk-2000.webp"
       }
     ]
+  },
+  "scoop": {
+    "width": 480,
+    "height": 600,
+    "alt": "A scoop of gelato being pressed into a Celsius cup",
+    "srcset": [
+      {
+        "w": 480,
+        "src": "/images/photos/scoop-480.webp"
+      }
+    ]
+  },
+  "flasks": {
+    "width": 534,
+    "height": 668,
+    "alt": "Flasks of gelato base on the bar, nitrogen fog rolling past them",
+    "srcset": [
+      {
+        "w": 480,
+        "src": "/images/photos/flasks-480.webp"
+      }
+    ]
   }
 }

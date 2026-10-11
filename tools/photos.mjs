@@ -72,6 +72,20 @@ const photos = [
     from: '_DSC0396',
     alt: 'A row of white mixers with nitrogen fog spilling from the bowls',
   },
+  // Flavours section. Both originals are small (860 and 907px wide), so they only go in
+  // the four-across flavour tiles. Crops are upright 4:5 to match the tile.
+  {
+    id: 'scoop',
+    from: '5d892af9393d9a2ff785637c4b5de67d',
+    crop: [0.128, 0, 0.558, 1],
+    alt: 'A scoop of gelato being pressed into a Celsius cup',
+  },
+  {
+    id: 'flasks',
+    from: 'Capturedfd',
+    crop: [0.02, 0, 0.589, 1],
+    alt: 'Flasks of gelato base on the bar, nitrogen fog rolling past them',
+  },
 ];
 
 const manifest = {};
