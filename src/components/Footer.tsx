@@ -19,10 +19,10 @@ export default function Footer() {
         <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
           <div>
             <Image
-              src="/images/celsius-logo-mono.png"
+              src="/images/celsius-logo-metal.webp"
               alt="Celsius Dessert Bar"
-              width={220}
-              height={102}
+              width={416}
+              height={192}
               className="h-14 w-auto"
             />
             <p className="mt-6 max-w-[22rem] text-[0.9375rem] leading-[1.6] text-bone/60">

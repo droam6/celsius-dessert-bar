@@ -1,0 +1,15 @@
+# Old addresses from the previous (Jimdo) site, sent to the new home page so saved links
+# and search results do not land on "Page not found". The old page names seen on that site
+# were Blog, Event, Contact, About, Privacy Policy and Sitemap; the exact old addresses were
+# not recorded, so these are the standard Jimdo paths for those names. Remove a line if a
+# real page is ever added at that address.
+/blog        /             301
+/blog/*      /             301
+/event       /             301
+/event/*     /             301
+/contact     /             301
+/contact/*   /             301
+/about       /             301
+/about/*     /             301
+/j/*         /             301
+/sitemap     /sitemap.xml  301

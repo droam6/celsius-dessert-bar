@@ -138,3 +138,15 @@ Two-page site (/ + /menu), light editorial palette with dark cinematic heroes. H
 ## Next
 - Jack: review `rework` in the browser (faces cropped or blurred before commit), then SEO, Google Business Profile, summer offer wording
 - Launch blockers unchanged: form endpoint, real menu, hosting + DNS at OnlyDomains, ABN, privacy policy, terms
+
+## Live (10 Oct 2026)
+- www.celsiusdessertbar.com.au now serves branch `rework` from Cloudflare Pages. Jack moved the nameservers from Jimdo to Cloudflare and attached both addresses. Email still runs through Jimdo's mail servers and must not be touched.
+
+## Audit fixes + client requests (11 Oct 2026, branch `audit-fixes`)
+- Built: metal finish (logo, hero temperature, package names), all-black home page, film sound and stop controls, hero pause button, "Other" event type, company and venue fields, phone Enquire button, contained phone menu, clients block (brand logos + venue names), Enquire and Instagram row under the event photos, Flavours section (waiting for photos), security headers, old-address redirects, sample menu out of search, opening hours hidden, Next.js 16.4.0. See D33 to D40.
+- Checked on a local build: axe finds 0 violations on home, menu and 404 at phone and desktop width; no sideways scroll 320 to 2560; phone menu keeps focus and closes on Escape; film buttons switch player address as designed; the form hands over to the email app with the new fields; the Content-Security-Policy blocked nothing in a dry run; eslint clean; build clean.
+- Not verified here: sound actually playing (the workspace cannot reach YouTube), iOS Safari, the metal on a real phone screen, the live response headers after deploy.
+
+## Next
+- Jack: look at the Cloudflare preview of `audit-fixes`, pick the metal, publish by fast-forwarding `rework`.
+- Client: flavour photos and names from Instagram, opening hours, ABN and legal entity, allergen list, real menu, which metal.

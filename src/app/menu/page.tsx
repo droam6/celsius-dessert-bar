@@ -9,9 +9,14 @@ const siteUrl = 'https://www.celsiusdessertbar.com.au';
 const description =
   'The Celsius Dessert Bar menu: signature and seasonal liquid nitrogen gelato, frozen to order at our Chatswood kiosk and at events across Sydney.';
 
+// While the flavour list is still sample content (menu.note is set) the page stays out of
+// search. It is also left out of public/sitemap.xml; add it back when the real menu lands.
+const isSampleMenu = Boolean(agencyData.menu.note);
+
 export const metadata: Metadata = {
   title: 'Menu | Celsius Dessert Bar',
   description,
+  ...(isSampleMenu ? { robots: { index: false, follow: true } } : {}),
   alternates: { canonical: `${siteUrl}/menu` },
   openGraph: {
     title: 'Menu | Celsius Dessert Bar',

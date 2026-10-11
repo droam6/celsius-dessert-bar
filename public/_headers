@@ -1,0 +1,24 @@
+# Response headers for Cloudflare Pages (this file is copied into the build output).
+#
+# Content-Security-Policy notes:
+# - 'unsafe-inline' for scripts is needed by the framework's own inline start-up scripts.
+# - i.ytimg.com is the still for the event film; youtube-nocookie.com is the player.
+# - cloudflareinsights is listed so Cloudflare Web Analytics works if it is ever switched on.
+# - When business.webhook_url is set in data/agency.json, add that host to connect-src.
+
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://i.ytimg.com; font-src 'self'; media-src 'self'; frame-src https://www.youtube-nocookie.com; connect-src 'self' https://cloudflareinsights.com; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests
+
+# Build files have a fingerprint in their name, so they can be kept for a year.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Photos, logos and video keep their names when replaced, so a day only.
+/images/*
+  Cache-Control: public, max-age=86400
+
+/videos/*
+  Cache-Control: public, max-age=86400

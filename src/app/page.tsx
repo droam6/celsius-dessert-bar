@@ -4,6 +4,7 @@ import Intro from '@/components/Intro';
 import Film from '@/components/Film';
 import Clients from '@/components/Clients';
 import Events from '@/components/Events';
+import Flavours from '@/components/Flavours';
 import Packages from '@/components/Packages';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
@@ -24,6 +25,7 @@ export default function Home() {
         <Intro />
         <Clients />
         <Events />
+        <Flavours />
         <Packages />
         <Contact />
       </main>

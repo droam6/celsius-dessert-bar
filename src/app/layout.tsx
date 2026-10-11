@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import agencyData from "@data/agency.json";
 import "./globals.css";
@@ -67,6 +67,9 @@ export const metadata: Metadata = {
   robots: siteLive ? { index: true, follow: true } : { index: false, follow: false },
 };
 
+// Phone browsers tint their own bars to match the page.
+export const viewport: Viewport = { themeColor: "#000000" };
+
 // Structured data is built from data/agency.json so it can never drift from the page.
 // IceCreamShop is the schema.org type for the kiosk; the event packages are listed as services.
 const dayCodes: Record<string, string[]> = {
@@ -105,17 +108,23 @@ const jsonLd = {
     addressCountry: "AU",
   },
   hasMap: business.google_maps_url,
-  openingHoursSpecification: business.hours
-    .filter((slot) => dayCodes[slot.days])
-    .map((slot) => {
-      const [opens, closes] = slot.hours.split("–").map(to24h);
-      return {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: dayCodes[slot.days],
-        opens,
-        closes,
-      };
-    }),
+  // Hours are only published once the client has confirmed them: the old figures did not
+  // match the Google listing. Flip business.hours_confirmed in data/agency.json to restore them.
+  ...(business.hours_confirmed
+    ? {
+        openingHoursSpecification: business.hours
+          .filter((slot) => dayCodes[slot.days])
+          .map((slot) => {
+            const [opens, closes] = slot.hours.split("–").map(to24h);
+            return {
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: dayCodes[slot.days],
+              opens,
+              closes,
+            };
+          }),
+      }
+    : {}),
   sameAs: [business.social.instagram].filter(Boolean),
   areaServed: { "@type": "City", name: "Sydney" },
   hasOfferCatalog: {
@@ -145,7 +154,6 @@ export default function RootLayout({
       <head>
         {/* Marks that script is running, so scroll entrances only hide content when they can also show it. */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.dataset.js='1'" }} />
-        <link rel="preconnect" href="https://i.ytimg.com" />
         {/* AWAITING_GTM_ID — Google Tag Manager snippet goes here */}
         <script
           type="application/ld+json"

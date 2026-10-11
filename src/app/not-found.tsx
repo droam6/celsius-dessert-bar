@@ -11,6 +11,12 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-bone focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-ink"
+      >
+        Skip to main content
+      </a>
       <Navigation onPaper />
       <main id="main-content" className="mx-auto flex min-h-[80svh] max-w-[1360px] flex-col justify-end px-6 pb-20 pt-40 lg:px-12 lg:pb-28">
         <h1 className="display text-[clamp(3rem,9vw,8rem)] leading-[0.98] text-bone">

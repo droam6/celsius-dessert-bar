@@ -35,6 +35,7 @@
         "hours": "12:00 PM – 5:00 PM"
       }
     ],
+    "hours_confirmed": false,
     "webhook_url": null,
     "film_caption": "Lancôme event, Myer Sydney",
     "announcement": null
@@ -47,7 +48,8 @@
     "Private party",
     "Birthday or milestone",
     "Festival or public event",
-    "Film, TV or premiere event"
+    "Film, TV or premiere event",
+    "Other"
   ],
   "packages": [
     {
@@ -184,6 +186,10 @@
     "rotation_note": "The menu changes with the season. Ask at the kiosk for today's flavours.",
     "custom_flavour_note": "Premium package guests receive a bespoke flavour developed by our chefs to match your event theme."
   },
+  "flavours": {
+    "heading": "Some of what we freeze",
+    "items": []
+  },
   "brand_partners": [
     {
       "name": "Lancôme",
@@ -202,28 +208,29 @@
       "name": "Mitsubishi Motors",
       "logo": "/images/brands/mitsubishi-motors.svg",
       "kind": "brand",
-      "shape": "tall"
+      "shape": "tall",
+      "scale": 1.25
     },
     {
       "name": "Subaru",
       "logo": "/images/brands/subaru.svg",
       "kind": "brand",
       "shape": "wide",
-      "scale": 0.9
+      "scale": 0.72
     },
     {
       "name": "Hitachi",
       "logo": "/images/brands/hitachi.svg",
       "kind": "brand",
       "shape": "wide",
-      "scale": 0.78
+      "scale": 0.7
     },
     {
       "name": "Google",
       "logo": "/images/brands/google.svg",
       "kind": "brand",
       "shape": "wide",
-      "scale": 1.1
+      "scale": 1.22
     },
     {
       "name": "Salesforce",

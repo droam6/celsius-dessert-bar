@@ -1,16 +1,26 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Celsius — dark, cinematic. Black, bone, one metal. Mint lives in the logo only. */
+  /* Celsius — dark, cinematic. Black, bone, one metal. Mint lives in the original logo only. */
   --color-ink: #000000;        /* page black: matches the black of the hero film exactly */
   --color-ink-soft: #121212;   /* raised surface on black */
   --color-bone: #F1EDE4;       /* text on black */
-  --color-paper: #ECE6DA;      /* the one light surface: packages + menu card */
+  --color-paper: #ECE6DA;      /* the one light surface: the menu page, set like a printed card */
   --color-champagne: #C9AE84;  /* metal accent on black */
   --color-bronze: #6E5837;     /* the same metal, dark enough for text on paper */
 
   --font-display: var(--font-bodoni), "Bodoni MT", Didot, "Times New Roman", serif;
   --font-body: var(--font-hanken), "Helvetica Neue", Arial, sans-serif;
+}
+
+:root {
+  /* The metal finish: champagne silver. A platinum body with a warm champagne shadow and one
+     soft light band. Used on the wordmark and on three kinds of words only (CLAUDE.md, "Metal").
+     The stops must match tools/logo-metal.mjs, which paints the same metal into the wordmark. */
+  --metal: linear-gradient(100deg, #FFFDF7 0%, #DCD3C0 22%, #FFFFFF 38%, #B4AA97 55%, #F1EBDD 72%, #CEC5B2 88%, #FBF6EA 100%);
+  /* The same metal lit from above, for words at small sizes: every letter gets the same
+     light, where the diagonal fill would leave one dull patch in the middle of a short word. */
+  --metal-lit: linear-gradient(172deg, #FFFFFF 0%, #F6F0E2 30%, #C2B59B 58%, #E9DFC9 78%, #FBF6EA 100%);
 }
 
 html {
@@ -70,10 +80,68 @@ body {
 
 /* Small functional label: table row heads, captions, form labels. Never a heading garnish. */
 .label {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+/* ─────────── Metal ───────────
+   Text filled with the metal instead of a flat colour. Sparing by rule: a page of shiny
+   words looks cheap. Without background-clip support it falls back to one flat tone. */
+
+.metal {
+  color: #E6DBC3;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .metal {
+    background-image: var(--metal);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Room for italic overhang, so the fill is not cut off at the edges of a slanted glyph. */
+    padding-inline: 0.08em;
+    margin-inline: -0.08em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .metal::selection {
+    -webkit-text-fill-color: var(--color-ink);
+  }
+
+  .metal--lit {
+    background-image: var(--metal-lit);
+  }
+
+  /* One pass of light across the hero temperature, once, after the headline has risen.
+     It then rests as plain metal. Nothing on the site shimmers on a loop. The band is soft
+     enough that the metal still shows through it, and it moves at an even speed. */
+  .metal--sheen {
+    background-image:
+      linear-gradient(100deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0) 60%),
+      var(--metal);
+    background-size: 300% 100%, 100% 100%;
+    background-position: 100% 0, 0 0;
+    animation: sheen 2.6s linear 1.4s 1 both;
+  }
+}
+
+@keyframes sheen {
+  from { background-position: 100% 0, 0 0; }
+  to   { background-position: 0% 0, 0 0; }
+}
+
+/* Windows high-contrast and similar modes: plain system text, no fill tricks. */
+@media (forced-colors: active) {
+  .metal {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: CanvasText;
+  }
 }
 
 /* ─────────── Links and buttons ─────────── */
@@ -131,7 +199,7 @@ body {
   pointer-events: none;
   background:
     linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.92) 30%, rgba(0, 0, 0, 0.78) 50%, rgba(0, 0, 0, 0.5) 66%, rgba(0, 0, 0, 0) 88%),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 22%);
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.55) 9%, rgba(0, 0, 0, 0) 26%);
 }
 
 /* Headline rises out of a clipped line. CSS only, so it never waits for script. */
@@ -200,7 +268,8 @@ body {
   padding: 0.7rem 0;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--color-bone) 32%, transparent);
+  /* 48% bone on black is about 4:1, clear of the 3:1 needed for a field edge. */
+  border-bottom: 1px solid color-mix(in srgb, var(--color-bone) 48%, transparent);
   border-radius: 0;
   color: var(--color-bone);
   font: inherit;
@@ -208,12 +277,15 @@ body {
   transition: border-color 0.2s ease;
 }
 
-.field:hover { border-bottom-color: color-mix(in srgb, var(--color-bone) 60%, transparent); }
+.field:hover { border-bottom-color: color-mix(in srgb, var(--color-bone) 75%, transparent); }
 
+/* Focus thickens the line to 3px of champagne (about 9:1 on black). No box: a text field
+   shows its focus style on a mouse click too, and a ring round every clicked field was
+   heavier than "a line and a label". */
 .field:focus {
   outline: none;
   border-bottom-color: var(--color-champagne);
-  box-shadow: 0 1px 0 0 var(--color-champagne);
+  box-shadow: 0 2px 0 0 var(--color-champagne);
 }
 
 select.field {
@@ -252,5 +324,8 @@ select.field option {
     background-position: center;
   }
   .rise > span,
-  .settle { animation: none; }
+  .settle,
+  .metal--sheen { animation: none; }
+  /* No moving video, so no pause control either. */
+  #hero [data-video-toggle] { display: none; }
 }
